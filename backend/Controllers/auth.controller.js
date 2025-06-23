@@ -117,6 +117,11 @@ export const Logout=async(req,res)=>{
             sameSite:"None",
             secure:true,
         })
+
+        res.status(200).json({
+            success:true,
+            message:"Logout successfully"
+        })
     } catch (error) {
         return res.status(500).json({
             success:false,
