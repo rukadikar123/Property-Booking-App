@@ -5,6 +5,7 @@ import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import { useSelector } from "react-redux";
 import useGetCurrentUser from "./customHooks/useGetCurrentUser";
+import ListingDetails from "./Pages/ListingDetails";
 
 function App() {
   useGetCurrentUser()
@@ -16,9 +17,11 @@ const {user,loading}=useSelector(state=> state?.auth)
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={user? <PropertyCard /> : <Navigate to='/login' /> } />
-        <Route path="/signup" element={!user ? <SignUp/> : <Navigate to='/' />} />
-        <Route path="/login" element={!user ? <Login/> : <Navigate to='/' /> } />
+        <Route path="/" element={<Navigate to={user ? "/listing" : "login"} />} />
+        <Route path="/listing" element={user? <PropertyCard /> : <Navigate to='/login' /> } />
+        <Route path="/signup" element={!user ? <SignUp/> : <Navigate to='/listing' />} />
+        <Route path="/login" element={!user ? <Login/> : <Navigate to='/listing' /> } />
+        <Route path="/listing/:id" element={user ? <ListingDetails/> : <Navigate to='/listing' /> } />
         <Route />
       </Routes>
     </>

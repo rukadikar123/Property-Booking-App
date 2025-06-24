@@ -20,7 +20,7 @@ function SignUp() {
         console.log(res);
         dispatch(setUser(res?.data?.user))
         dispatch(setLoading(false))
-        navigate('/')
+        navigate('/listing')
         
     } catch (error) {
         console.log(error);

@@ -1,17 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../redux/authSlice";
 import axios from "axios";
 
 function Navbar() {
   const { user } = useSelector((state) => state?.auth);
   const dispatch = useDispatch();
+  const navigate=useNavigate()
   const handleLogout =async() => {
     try {
       await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/logout`,{withCredentials:true})
       
     dispatch(setUser(null));
+    navigate("/listing")
     } catch (error) {
      console.log(error);
       
@@ -22,7 +24,7 @@ function Navbar() {
   return (
     <div className="flex items-center justify-between px-16 py-4 shadow-lg">
       <Link
-        to="/"
+        to="/listing"
         className="text-3xl font-bold text-blue-700 hover:text-blue-500"
       >
         Airbnb
