@@ -154,3 +154,33 @@ export const getCurrentUser=async(req,res)=>{
         })
     }
 }
+
+export const becomeHost=async(req,res)=>{
+    try {
+        const {isHost}=req.body
+
+        if(!isHost){
+
+            return res.status(400).json({
+                success:false,
+                message:"No field to update"
+            })
+        }
+
+        const user=await User.findByIdAndUpdate(req.user._id,{
+            isHost
+        },{new:true }).select("-password")
+
+        return res.status(200).json({
+            success:true,
+            message:"User updated successfully",
+            user
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:`becomeHost: ${error.message}`
+        })
+    }
+}
