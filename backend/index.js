@@ -4,6 +4,7 @@ import { MongodbConnect } from './config/MongoDbConnect.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
 import authRoutes from './Routes/auth.routes.js'
+import listingRoutes from './Routes/listing.routes.js'
 
 const app=express();
 
@@ -21,6 +22,8 @@ app.use(cookieParser())
 // Routes
 
 app.use("/api/auth",authRoutes)
+app.use("/api/listing",listingRoutes)
+
 
 
 
