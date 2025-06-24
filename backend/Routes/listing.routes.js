@@ -5,9 +5,9 @@ import { upload } from '../Middlewares/multer.js'
 
 const router=Router()
 
-router.get('/listing',isAuthenticated , getpropertyList)
-router.post('/listing/add',isAuthenticated,upload.array("images",6), addProperty)
-router.get('/listing/:id',isAuthenticated , getProperty)
+router.get('/',isAuthenticated , getpropertyList)
+router.post('/add',isAuthenticated,upload.array("images",6), addProperty)
+router.get('/:id',isAuthenticated , getProperty)
 
 
 

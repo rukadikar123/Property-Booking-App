@@ -7,7 +7,7 @@ const router=Router();
 
 
 router.post('/place-booking', isAuthenticated , placeBooking)
-router.post('/my-bookings', isAuthenticated, getUsersBookings)
+router.get('/my-bookings', isAuthenticated, getUsersBookings)
 
 
 
