@@ -1,72 +1,85 @@
-import axios from 'axios';
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { setUser } from '../redux/authSlice';
-import { useDispatch } from 'react-redux';
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "../redux/authSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 function Login() {
-     const [form, setForm] = useState({ email: "", password: "" });
-      const navigate = useNavigate();
-      const dispatch = useDispatch();
-    
-      const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-      };
-    
-      const handleSubmit=async (e)=>{
-           e.preventDefault();
-        try {
-            const res=await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`,form,{withCredentials:true})
-            dispatch(setUser(res?.data?.user))
-        } catch (error) {
-            console.log(error);
-            
-        }
-      }
+  const [form, setForm] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        form,
+        { withCredentials: true }
+      );
+      dispatch(setUser(res?.data?.user));
+      toast("Login successfull!");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+    }
+  };
   return (
- <div className="flex justify-center items-center h-[90vh] bg-gray-200">
+    <section className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded shadow-md w-96"
+        className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg border border-gray-200"
       >
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
+        <h2 className="text-3xl font-bold text-center mb-6 text-blue-700">
+          Welcome Back
+        </h2>
 
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          className="mb-3 p-2 w-full border rounded"
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          className="mb-3 p-2 w-full border rounded"
-          required
-        />
+        <div className="space-y-4">
+          <input
+            name="email"
+            type="email"
+            placeholder="Email address"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
+          className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
         >
           Log In
         </button>
-        <p className="mt-4">
-          Already have an Account{" "}
+
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Don't have an account?{" "}
           <span
-            className="text-blue-400 cursor-pointer"
+            className="text-blue-500 hover:underline cursor-pointer"
             onClick={() => navigate("/signup")}
           >
-            Signup
+            Sign up here
           </span>
         </p>
       </form>
-    </div>  )
+    </section>
+  );
 }
 
-export default Login
+export default Login;

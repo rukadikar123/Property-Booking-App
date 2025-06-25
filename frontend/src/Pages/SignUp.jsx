@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
-import { setLoading, setUser } from '../redux/authSlice';
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { setLoading, setUser } from "../redux/authSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 function SignUp() {
- const [form, setForm] = useState({ fullname: "", email: "", password: "" });
+  const [form, setForm] = useState({ fullname: "", email: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -13,68 +14,87 @@ function SignUp() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit=async (e)=>{
-       e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-        const res=await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/signup`,form,{withCredentials:true})
-        console.log(res);
-        dispatch(setUser(res?.data?.user))
-        dispatch(setLoading(false))
-        navigate('/listing')
-        
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        form,
+        { withCredentials: true }
+      );
+      console.log(res);
+      dispatch(setUser(res?.data?.user));
+      dispatch(setLoading(false));
+      toast("Signup successfull!");
+      navigate("/listing");
     } catch (error) {
-        console.log(error);
-        dispatch(setLoading(false))
-        
+      console.log(error);
+      dispatch(setLoading(false));
+      toast.error(error?.response?.data?.message);
     }
-  }
+  };
 
   return (
-    <div className="flex justify-center items-center h-[90vh] bg-gray-200">
+    <section className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded shadow-md w-96"
+        className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg border border-gray-200"
       >
-        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+        <h2 className="text-3xl font-bold text-center mb-6 text-blue-700">
+          Create Account
+        </h2>
 
-        <input
-          name="fullname"
-          type="text"
-          placeholder="Fullname"
-          value={form.fullname}
-          onChange={handleChange}
-          className="mb-3 p-2 w-full border rounded"
-          required
-        />
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          className="mb-3 p-2 w-full border rounded"
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          className="mb-3 p-2 w-full border rounded"
-          required
-        />
+        <div className="space-y-4">
+          <input
+            name="fullname"
+            type="text"
+            placeholder="Full Name"
+            value={form.fullname}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
+          className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
         >
           Create Account
         </button>
-        <p className='mt-4'>Already have an Account <span className='text-blue-400 cursor-pointer' onClick={()=>navigate('/login')}>Login</span></p>
+
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <span
+            className="text-blue-500 hover:underline cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
+            Log in here
+          </span>
+        </p>
       </form>
-    </div>
-  )
+    </section>
+  );
 }
 
-export default SignUp
+export default SignUp;

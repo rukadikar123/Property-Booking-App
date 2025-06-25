@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../redux/authSlice";
 import axios from "axios";
+import { FaBars } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+
 
 function Navbar() {
   const { user } = useSelector((state) => state?.auth);
+    const [isOpen, setIsOpen] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -29,7 +34,7 @@ function Navbar() {
         { withCredentials: true }
       );
       console.log(res);
-
+      navigate("/add")
       dispatch(setUser(res?.data?.user));
     } catch (error) {
       console.log(error);
@@ -37,34 +42,76 @@ function Navbar() {
   };
 
   return (
-    <div className="flex items-center justify-between px-16 py-4 shadow-lg">
-      <Link
-        to="/listing"
-        className="text-3xl font-bold text-blue-700 hover:text-blue-500"
-      >
-        Airbnb
-      </Link>
-      <div className="flex items-center gap-6">
-        <Link to='/listing' className="hover:scale-105 font-semibold text-lg hover:text-gray-500 transition-all duration-200">
-          Homes
-        </Link>
+    <header className="shadow-md sticky top-0 z-50 bg-white border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex justify-between items-center">
+        {/* Logo */}
         <Link
-        to='/add'
-          onClick={handleHost}
-          className="hover:scale-105 font-semibold text-lg hover:text-gray-500 transition-all duration-200"
+          to="/listing"
+          className="text-3xl font-extrabold text-[#FF385C] hover:text-[#e11d48] transition duration-200  tracking-tight"
         >
-          Become a host
+          Airbnb
         </Link>
-        {user && (
-          <Link
-            onClick={handleLogout}
-            className="hover:scale-105 font-semibold text-lg hover:text-gray-500 transition-all duration-200"
-          >
-            Logout
+
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center space-x-8 font-medium text-lg">
+          <Link to="/listing" className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+            Homes
           </Link>
-        )}
+          <button
+            onClick={handleHost}
+            className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+          >
+            Become a Host
+          </button>
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="text-gray-700 hover:text-red-500 transition duration-200"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link to="/login" className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+              Login
+            </Link>
+          )}
+          {user && (
+            <div className="w-10 h-10 rounded-full bg-[#FF385C] flex items-center justify-center text-white font-semibold">
+              {user?.fullname?.[0]?.toUpperCase() || "U"}
+            </div>
+          )}
+        </nav>
+
+        {/* Mobile menu toggle */}
+        <button
+          className="md:hidden text-[#FF385C] hover:text-[#e11d48] transition duration-200"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <IoMdClose /> : <FaBars />}
+        </button>
       </div>
-    </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden flex flex-col items-start px-6 py-4 bg-white space-y-4 shadow-lg transition-all duration-300">
+          <Link to="/listing" className="text-gray-700 hover:text-[#FF385C] transition duration-200" onClick={() => setIsOpen(false)}>
+            Homes
+          </Link>
+          <button onClick={() => { handleHost(); setIsOpen(false); }} className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+            Become a Host
+          </button>
+          {user ? (
+            <button onClick={() => { handleLogout(); setIsOpen(false); }} className="text-gray-700 hover:text-red-500 transition">
+              Logout
+            </button>
+          ) : (
+            <Link to="/login" className="text-gray-700 hover:text-[#FF385C] transition duration-200" onClick={() => setIsOpen(false)}>
+              Login
+            </Link>
+          )}
+        </div>
+      )}
+    </header>
   );
 }
 

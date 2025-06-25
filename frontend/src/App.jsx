@@ -8,6 +8,7 @@ import useGetCurrentUser from "./customHooks/useGetCurrentUser";
 import ListingDetails from "./Pages/ListingDetails";
 import MyBookings from "./Pages/MyBookings";
 import AddProperty from "./Pages/AddProperty";
+import {ToastContainer} from 'react-toastify'
 
 function App() {
   useGetCurrentUser()
@@ -28,6 +29,7 @@ const {user,loading}=useSelector(state=> state?.auth)
         <Route path="/add" element={user ? <AddProperty/> : <Navigate to='/listing' /> } />
         <Route />
       </Routes>
+      <ToastContainer/>
     </>
   );
 }

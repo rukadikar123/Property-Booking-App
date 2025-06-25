@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function ListingDetails() {
   const { id } = useParams();
@@ -26,8 +27,7 @@ function ListingDetails() {
   const handleBooking=async()=>{
     try {
       const res=await axios.post(`${import.meta.env.VITE_API_URL}/api/booking/place-booking`,{propertyId:property?._id, checkIn ,checkOut},{withCredentials:true})
-      
-        alert("Booking successful!");
+        toast("Booking successful!")
         navigate("/my-bookings")
     } catch (error) {
       console.log(error);
@@ -36,10 +36,10 @@ function ListingDetails() {
       error.response.status === 400 &&
       error.response.data.message === "Dates already booked"
     ) {
-      alert("Selected dates are already booked.");
+      toast.error("Selected dates are already booked.");
     } else {
       console.error(error);
-      alert("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     }
       
     }
@@ -51,70 +51,82 @@ function ListingDetails() {
   }, [id]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
-      {/* Title */}
-      <h1 className="text-4xl font-bold">{property?.title}</h1>
+     <section className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-6xl mx-auto space-y-8">
+        {/* Title */}
+        <h1 className="text-4xl font-bold text-[#FF385C]">
+          {property?.title}
+        </h1>
 
-      {/* Images Grid */}
-      <div className="grid grid-cols-3 grid-rows-2 gap-4 h-[400px]">
-        {property?.images.slice(0, 5).map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt={`Property ${index + 1}`}
-            className={
-              index === 0
-                ? "col-span-2 row-span-2 object-cover w-full h-full rounded-lg"
-                : "object-cover w-full h-full rounded-lg"
-            }
-          />
-        ))}
-      </div>
-
-      {/* Description */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-2">Description</h2>
-        <p className="text-gray-700">{property?.description}</p>
-      </div>
-
-      {/* Location */}
-      <div>
-        <h2 className="text-xl font-semibold mb-1">Location</h2>
-        <p className="text-gray-600">{property?.location}</p>
-      </div>
-
-      {/* Booking Box */}
-      <div className="border p-6 rounded-lg shadow-md w-full md:w-1/2">
-        <div className="text-2xl font-bold mb-2">
-          ₹{property?.price} / night
+        {/* Images */}
+        <div className="grid grid-cols-3 grid-rows-2 gap-4 h-[400px] rounded-lg overflow-hidden">
+          {property?.images.slice(0, 5).map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={`Property ${index + 1}`}
+              className={`object-cover w-full h-full rounded-lg transition-transform duration-300 hover:scale-105 ${
+                index === 0 ? "col-span-2 row-span-2" : ""
+              }`}
+            />
+          ))}
         </div>
 
-        <div className="flex flex-col gap-3 mb-4">
-          <label className="text-sm font-medium">
-            Check-in:
-            <input
-            value={checkIn}
-            onChange={(e)=>setCheckIn(e.target.value)}
-              type="date"
-              className="block w-full border rounded p-2 mt-1"
-            />
-          </label>
-          <label className="text-sm font-medium">
-            Check-out:
-            <input
-            value={checkOut}
-            onChange={(e)=>setCheckOut(e.target.value)}
-              type="date"
-              className="block w-full border rounded p-2 mt-1"
-            />
-          </label>
+        {/* Description */}
+        <div>
+          <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+            Description
+          </h2>
+          <p className="text-gray-700 leading-relaxed">
+            {property?.description}
+          </p>
         </div>
 
-        <button onClick={handleBooking} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
-          Book Now
-        </button>
+        {/* Location */}
+        <div>
+          <h2 className="text-xl font-semibold mb-1 text-gray-800">
+            Location
+          </h2>
+          <p className="text-gray-600">{property?.location}</p>
+        </div>
+
+        {/* Booking Box */}
+        <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-lg w-full md:w-1/2">
+          <div className="text-2xl font-bold text-[#FF385C] mb-4">
+            ₹{property?.price?.toLocaleString()} <span className="text-base font-medium text-gray-500">/ Night</span>
+          </div>
+
+          <div className="flex flex-col gap-4 mb-6">
+            <label className="text-sm font-medium text-gray-700">
+              Check-in:
+              <input
+                type="date"
+                value={checkIn}
+                onChange={(e) => setCheckIn(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#FF385C]"
+              />
+            </label>
+
+            <label className="text-sm font-medium text-gray-700">
+              Check-out:
+              <input
+                type="date"
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#FF385C]"
+              />
+            </label>
+          </div>
+
+          <button
+            onClick={handleBooking}
+            className="w-full bg-[#FF385C] hover:bg-[#e11d48] text-white font-semibold py-3 rounded-lg transition duration-300"
+          >
+            Book Now
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
