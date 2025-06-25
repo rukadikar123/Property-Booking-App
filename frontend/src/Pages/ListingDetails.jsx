@@ -26,11 +26,21 @@ function ListingDetails() {
   const handleBooking=async()=>{
     try {
       const res=await axios.post(`${import.meta.env.VITE_API_URL}/api/booking/place-booking`,{propertyId:property?._id, checkIn ,checkOut},{withCredentials:true})
-
+      
         alert("Booking successful!");
         navigate("/my-bookings")
     } catch (error) {
       console.log(error);
+       if (
+      error.response &&
+      error.response.status === 400 &&
+      error.response.data.message === "Dates already booked"
+    ) {
+      alert("Selected dates are already booked.");
+    } else {
+      console.error(error);
+      alert("Something went wrong. Please try again.");
+    }
       
     }
   }

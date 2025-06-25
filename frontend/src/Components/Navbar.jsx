@@ -7,18 +7,33 @@ import axios from "axios";
 function Navbar() {
   const { user } = useSelector((state) => state?.auth);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
-  const handleLogout =async() => {
+  const navigate = useNavigate();
+  const handleLogout = async () => {
     try {
-      await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/logout`,{withCredentials:true})
-      
-    dispatch(setUser(null));
-    navigate("/listing")
-    } catch (error) {
-     console.log(error);
-      
-    }
+      await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+        withCredentials: true,
+      });
 
+      dispatch(setUser(null));
+      navigate("/listing");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleHost = async () => {
+    try {
+      const res = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/api/auth/become-host`,
+        { isHost: true },
+        { withCredentials: true }
+      );
+      console.log(res);
+
+      dispatch(setUser(res?.data?.user));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -30,10 +45,14 @@ function Navbar() {
         Airbnb
       </Link>
       <div className="flex items-center gap-6">
-        <Link className="hover:scale-105 font-semibold text-lg hover:text-gray-500 transition-all duration-200">
+        <Link to='/listing' className="hover:scale-105 font-semibold text-lg hover:text-gray-500 transition-all duration-200">
           Homes
         </Link>
-        <Link className="hover:scale-105 font-semibold text-lg hover:text-gray-500 transition-all duration-200">
+        <Link
+        to='/add'
+          onClick={handleHost}
+          className="hover:scale-105 font-semibold text-lg hover:text-gray-500 transition-all duration-200"
+        >
           Become a host
         </Link>
         {user && (

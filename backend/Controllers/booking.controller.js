@@ -70,12 +70,12 @@ export const placeBooking = async (req, res) => {
 
 export const getUsersBookings = async (req, res) => {
   try {
-    const bookings = await Booking.findById(req?.user?._id).populate(
-      "Property",
+    const bookings = await Booking.find({user:req.user._id}).populate(
+      "property",
       "title location images price"
     );
 
-    if (!bookings) {
+    if (!bookings || bookings.length === 0) {
       return res.status(400).json({
         success: false,
         message: "No Booking Found",
