@@ -24,7 +24,7 @@ app.use(cookieParser())
 
 app.use("/api/auth",authRoutes)
 app.use("/api/listing",listingRoutes)
-app.use("/api/Booking",bookingRoutes)
+app.use("/api/booking",bookingRoutes)
 
 
 

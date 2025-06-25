@@ -3,12 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const propertySlice=createSlice({
     name:"property",
     initialState:{
-        properties:null
+        properties:null,
     },
     reducers:{
         setProperties:(state,action)=>{
             state.properties=action.payload
-        }
+        },
+       
+
     }
 })
 

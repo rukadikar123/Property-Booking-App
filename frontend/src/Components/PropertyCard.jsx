@@ -2,10 +2,12 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setProperties } from "../redux/propertySlice";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function PropertyCard() {
   const { properties } = useSelector((state) => state?.property);
   const dispatch = useDispatch();
+  const navigate=useNavigate()
 
   const fetchProperties = async () => {
     try {
@@ -31,10 +33,10 @@ function PropertyCard() {
      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 p-6 ">
       {properties &&
         properties.map((property) => (
-          <div key={property._id} className="border p-2 rounded-lg flex flex-col gap-2 hover:cursor-pointer shadow-md hover:scale-105 transition-all ease-in-out duration-300">
+          <div onClick={()=>navigate(`/listing/${property._id}`)} key={property._id} className="border p-2 rounded-lg flex flex-col gap-2 hover:cursor-pointer shadow-md hover:scale-105 transition-all ease-in-out duration-300">
            <h2 className="text-lg font-semibold">{property?.title}</h2>
             <div className="flex">
-              <img src={property?.images[0]} alt="" className="w-full h-48 object-contain" />
+              <img src={property?.images[0]} alt="images" className="w-full h-40 object-contain" />
             </div>
             <p>{property?.location}</p>
             <p>{property?.price}</p>

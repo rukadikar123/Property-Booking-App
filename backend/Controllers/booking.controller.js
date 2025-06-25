@@ -36,9 +36,15 @@ export const placeBooking = async (req, res) => {
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
     const days = Math.ceil(
-      (checkInDate - checkOutDate) / (24 * 60 * 60 * 1000)
+      (checkOutDate - checkInDate) / (24 * 60 * 60 * 1000)
     );
 
+    if (days <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Check-out date must be after check-in date",
+      });
+    }
     const totalPrice = days * property?.price;
 
     const booking = await Booking.create({
@@ -62,29 +68,29 @@ export const placeBooking = async (req, res) => {
   }
 };
 
-export const getUsersBookings=async(req,res)=>{
-    try {
-        
-        const bookings=await Booking.findById(req?.user?._id).populate("Property", "title location images price")
+export const getUsersBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.findById(req?.user?._id).populate(
+      "Property",
+      "title location images price"
+    );
 
-        if(!bookings){
-            return res.status(400).json({
-                success:false,
-                message:"No Booking Found"
-            })
-        }
+    if (!bookings) {
+      return res.status(400).json({
+        success: false,
+        message: "No Booking Found",
+      });
+    }
 
-        return res.status(200).json({
-            success:true,
-            message:"fetched all Bookings successfully",
-            bookings
-        })
-
-
-    } catch (error) {
-         return res.status(500).json({
+    return res.status(200).json({
+      success: true,
+      message: "fetched all Bookings successfully",
+      bookings,
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: `placeBooking: ${error.message}`,
     });
-    }
-}
+  }
+};
