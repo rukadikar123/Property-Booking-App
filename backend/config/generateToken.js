@@ -1,14 +1,15 @@
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
-export const generateToken=(userId)=>{
-    try {
-        const token =jwt.sign({id:userId},process.env.JWT_SECRET,{
-            expiresIn:"4d"
-        })
+// Function to generate a JWT token using a user ID
+export const generateToken = (userId) => {
+  try {
+    //  Sign a new JWT token with the user's ID as payload
+    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+      expiresIn: "4d",
+    });
 
-        return token;
-    } catch (error) {
-        console.log("generateToken error",error);
-        
-    }
-}
+    return token;              //  Return the generated token
+  } catch (error) {
+    console.log("generateToken error", error);
+  }
+};

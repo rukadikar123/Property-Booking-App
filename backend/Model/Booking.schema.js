@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Define the schema for Booking
 const BookingSchema = new mongoose.Schema(
   {
     property: {
@@ -33,5 +34,6 @@ const BookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Create the Booking model from the schema and export it
 const Booking = mongoose.model("Booking", BookingSchema);
 export default Booking;

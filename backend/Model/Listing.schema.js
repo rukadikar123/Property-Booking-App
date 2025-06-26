@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Define the schema for Property listings
 const PropertySchema = new mongoose.Schema(
   {
     title: {
@@ -31,7 +32,7 @@ const PropertySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Create the model from schema and export
+const Property = mongoose.model("Property", PropertySchema);
 
-const Property=mongoose.model("Property",PropertySchema)
-
-export default Property
+export default Property;

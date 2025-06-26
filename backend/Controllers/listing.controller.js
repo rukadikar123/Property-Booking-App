@@ -3,15 +3,17 @@ import Property from "../Model/Listing.schema.js";
 
 export const getpropertyList = async (req, res) => {
   try {
+    // Fetch all properties from the database and populate the 'host' field (excluding password)
     const listOfProperty = await Property.find().populate("host", "-password");
 
+    // Check if no properties are found
     if (!listOfProperty || listOfProperty.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No Property found",
       });
     }
-
+    // Send success response with the list of properties
     res.status(200).json({
       success: true,
       message: "Properties fetched successfully",
@@ -27,10 +29,11 @@ export const getpropertyList = async (req, res) => {
 
 export const getProperty = async (req, res) => {
   try {
-    const { id } = req.params;
-
+    const { id } = req.params; // Extract property ID from the request URL parameters
+    // Find the property by ID and populate the 'host' field (excluding password)
     const property = await Property.findById(id).populate("host", "-password");
 
+    // If property not found, return 404
     if (!property) {
       return res.status(404).json({
         success: false,
@@ -38,6 +41,7 @@ export const getProperty = async (req, res) => {
       });
     }
 
+    // If found, return success response with property data
     return res.status(200).json({
       success: true,
       message: "Property fetched successfully",
@@ -53,6 +57,7 @@ export const getProperty = async (req, res) => {
 
 export const addProperty = async (req, res) => {
   try {
+    // Check if the user is a host
     if (!req.user.isHost) {
       return res.status(400).json({
         success: false,
@@ -60,8 +65,10 @@ export const addProperty = async (req, res) => {
       });
     }
 
+    // Destructure required fields from request body
     const { title, description, location, price } = req.body;
 
+    // Validate required fields
     if (!title || !description || !location || !price) {
       return res.status(400).json({
         success: false,
@@ -71,6 +78,7 @@ export const addProperty = async (req, res) => {
 
     let imageURLs = [];
 
+    // Upload each file to Cloudinary and store the secure URLs
     for (let file of req?.files) {
       let url = await uploadOnCloudinary(file?.path);
       if (url) {
@@ -84,6 +92,7 @@ export const addProperty = async (req, res) => {
       });
     }
 
+    // Create the property entry in the database
     const property = await Property.create({
       title,
       description,
@@ -93,6 +102,7 @@ export const addProperty = async (req, res) => {
       host: req.user._id,
     });
 
+    // Return successful response
     return res.status(201).json({
       success: true,
       message: "Property added successfully",

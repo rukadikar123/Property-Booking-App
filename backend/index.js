@@ -1,41 +1,40 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import { MongodbConnect } from './config/MongoDbConnect.js';
-import cookieParser from 'cookie-parser';
-import cors from 'cors'
-import authRoutes from './Routes/auth.routes.js'
-import listingRoutes from './Routes/listing.routes.js'
-import bookingRoutes from './Routes/booking.routes.js'
+import express from "express";
+import dotenv from "dotenv";
+import { MongodbConnect } from "./config/MongoDbConnect.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import authRoutes from "./Routes/auth.routes.js";
+import listingRoutes from "./Routes/listing.routes.js";
+import bookingRoutes from "./Routes/booking.routes.js";
 
+const app = express(); // Initialize express app
 
-const app=express();
+dotenv.config(); // Load environment variables
 
-dotenv.config()
+MongodbConnect(); // Connect to MongoDB
 
-MongodbConnect()
+// Middleware to parse JSON and URL-encoded payloads
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-app.use(cors({
-    origin:"https://property-booking-app-frontend.onrender.com",
-    credentials:true
-}))
-app.use(cookieParser())
+// Enable CORS for frontend origin (allow credentials like cookies)
+app.use(
+  cors({
+    origin: "https://property-booking-app-frontend.onrender.com",
+    credentials: true,
+  })
+);
+app.use(cookieParser()); // Middleware to parse cookies
 
+// API Routes
+app.use("/api/auth", authRoutes); // Auth routes
+app.use("/api/listing", listingRoutes); // Property listing routes
+app.use("/api/booking", bookingRoutes); // Booking routes
 
-// Routes
+import "./cron.js"; // Import scheduled cron job (runs on startup)
 
-app.use("/api/auth",authRoutes)
-app.use("/api/listing",listingRoutes)
-app.use("/api/booking",bookingRoutes)
-
-
-import './cron.js';
-
-const port =process.env.PORT || 5000
-
-app.listen(port,()=>{
-    
-    console.log(`server is running on port ${port}`);
-    
-})
+// Start server
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`server is running on port ${port}`);
+});

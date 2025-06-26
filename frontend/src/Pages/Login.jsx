@@ -6,23 +6,26 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" }); // state to store email and password input
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Handle input changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission for login
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Make login API call
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/login`,
         form,
         { withCredentials: true }
       );
-      dispatch(setUser(res?.data?.user));
+      dispatch(setUser(res?.data?.user)); // Set logged-in user in Redux
       toast("Login successfull!");
     } catch (error) {
       console.log(error);
@@ -38,7 +41,7 @@ function Login() {
         <h2 className="text-3xl font-bold text-center mb-6 text-blue-700">
           Welcome Back
         </h2>
-
+        {/* Input fields for email and password */}
         <div className="space-y-4">
           <input
             name="email"
@@ -60,7 +63,7 @@ function Login() {
             required
           />
         </div>
-
+        {/* Submit button */}
         <button
           type="submit"
           className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"

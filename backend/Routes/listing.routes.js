@@ -1,14 +1,16 @@
-import {Router} from 'express'
-import { addProperty, getProperty, getpropertyList } from '../Controllers/listing.controller.js'
-import { isAuthenticated } from '../Middlewares/auth.middleware.js'
-import { upload } from '../Middlewares/multer.js'
+import { Router } from "express";
+import {
+  addProperty,
+  getProperty,
+  getpropertyList,
+} from "../Controllers/listing.controller.js";
+import { isAuthenticated } from "../Middlewares/auth.middleware.js";
+import { upload } from "../Middlewares/multer.js";
 
-const router=Router()
+const router = Router();
 
-router.get('/',isAuthenticated , getpropertyList)
-router.post('/add',isAuthenticated,upload.array("images",6), addProperty)
-router.get('/:id',isAuthenticated , getProperty)
+router.get("/", isAuthenticated, getpropertyList); // Route to get all property listings (requires authentication)
+router.post("/add", isAuthenticated, upload.array("images", 6), addProperty); // Route to add a new property (requires authentication and image upload)
+router.get("/:id", isAuthenticated, getProperty); // Route to get details of a specific property by ID (requires authentication)
 
-
-
-export default router
+export default router;

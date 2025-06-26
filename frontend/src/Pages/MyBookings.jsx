@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
 
+  // Function to fetch bookings of the current user
   const fetchMyBookings = async () => {
     try {
       const res = await axios.get(
@@ -23,10 +24,11 @@ function MyBookings() {
   return (
     <section className="min-h-screen bg-gray-100 py-12 px-4">
       <div className="max-w-6xl mx-auto">
+        {/* Page Heading */}
         <h1 className="text-3xl font-bold text-[#FF385C] mb-8 text-center">
           My Bookings
         </h1>
-
+        {/* Show message if no bookings */}
         {bookings?.length === 0 ? (
           <p className="text-center text-gray-600 text-lg">
             No bookings found.
@@ -38,12 +40,13 @@ function MyBookings() {
                 key={booking?._id}
                 className="bg-white border border-gray-200 rounded-xl shadow hover:shadow-lg transition-transform duration-300 hover:scale-[1.02] overflow-hidden"
               >
+                {/* Property image */}
                 <img
                   src={booking?.property?.images[0]}
                   alt="property"
                   className="w-full h-52  object-fill"
                 />
-
+                {/* Property details */}
                 <div className="p-5 space-y-2">
                   <h2 className="text-xl font-semibold text-gray-800">
                     {booking?.property?.title}
@@ -66,8 +69,7 @@ function MyBookings() {
                       </span>
                     </p>
                     <p>
-                      <strong>Status:</strong>{" "}
-                      {booking?.status}
+                      <strong>Status:</strong> {booking?.status}
                     </p>
                   </div>
                 </div>

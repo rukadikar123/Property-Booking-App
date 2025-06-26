@@ -11,14 +11,17 @@ import AddProperty from "./Pages/AddProperty";
 import {ToastContainer} from 'react-toastify'
 
 function App() {
-  useGetCurrentUser()
-const {user,loading}=useSelector(state=> state?.auth)
+  useGetCurrentUser()     // Custom hook to fetch and set the current logged-in user
 
-  if (loading) return <div>Loading...</div>;
+const {user,loading}=useSelector(state=> state?.auth)    // Get user and loading status from Redux store
+
+  if (loading) return <div>Loading...</div>;      // While fetching user data, show loading
 
   return (
     <>
-      <Navbar />
+     {/* Global navigation bar */}
+      <Navbar />    
+       {/* Define routes */}
       <Routes>
         <Route path="/" element={<Navigate to={user ? "/listing" : "login"} />} />
         <Route path="/listing" element={user? <PropertyCard /> : <Navigate to='/login' /> } />

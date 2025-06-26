@@ -5,6 +5,7 @@ export const placeBooking = async (req, res) => {
   try {
     const { propertyId, checkIn, checkOut } = req.body;
 
+    // Validate required fields
     if (!propertyId || !checkIn || !checkOut) {
       return res.status(404).json({
         success: false,
@@ -12,6 +13,7 @@ export const placeBooking = async (req, res) => {
       });
     }
 
+    // Check for overlapping bookings on the same property
     const existingBooking = await Booking.findOne({
       property: propertyId,
       $or: [{ checkIn: { $lt: checkOut }, checkOut: { $gt: checkIn } }],
@@ -26,6 +28,7 @@ export const placeBooking = async (req, res) => {
 
     const property = await Property.findById(propertyId);
 
+    // Validate that the property exists
     if (!property) {
       return res.status(400).json({
         success: false,
@@ -33,20 +36,25 @@ export const placeBooking = async (req, res) => {
       });
     }
 
+    // Calculate total number of days
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
     const days = Math.ceil(
       (checkOutDate - checkInDate) / (24 * 60 * 60 * 1000)
     );
 
+    // Ensure check-out is after check-in
     if (days <= 0) {
       return res.status(400).json({
         success: false,
         message: "Check-out date must be after check-in date",
       });
     }
+
+    // Calculate total price based on number of days and property price
     const totalPrice = days * property?.price;
 
+    // Create the booking
     const booking = await Booking.create({
       property: propertyId,
       user: req.user._id,
@@ -71,11 +79,13 @@ export const placeBooking = async (req, res) => {
 
 export const getUsersBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({user:req.user._id}).populate(
-      "property",
-      "title location images price"
+    // Fetch bookings where the user ID matches the currently logged-in user
+    const bookings = await Booking.find({ user: req.user._id }).populate(
+      "property", // Populate property details
+      "title location images price" // Only select these fields from the property
     );
 
+    // If no bookings found, return appropriate message
     if (!bookings || bookings.length === 0) {
       return res.status(400).json({
         success: false,
@@ -83,6 +93,7 @@ export const getUsersBookings = async (req, res) => {
       });
     }
 
+    // Send bookings in response
     return res.status(200).json({
       success: true,
       message: "fetched all Bookings successfully",

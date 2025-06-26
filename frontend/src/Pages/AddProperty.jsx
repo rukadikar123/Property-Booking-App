@@ -3,35 +3,41 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 function AddProperty() {
+  // Form data for property details
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     location: "",
     price: "",
   });
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // State for storing selected image files
   const [loading, setLoading] = useState(false);
 
+  // Handle input field changes
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // Handle image file selection
   const handleImageChange = (e) => {
     setImages(Array.from(e.target.files)); // multiple files
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Require at least one image
     if (images.length === 0) {
       toast.warn("Please select at least one image.");
       return;
     }
 
+    // Prepare FormData for multipart/form-data request
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => data.append(key, value));
 
-    images.forEach((img) => data.append("images", img)); // match `upload.array("images", 6)`
+    images.forEach((img) => data.append("images", img));
 
     try {
       setLoading(true);
@@ -60,6 +66,7 @@ function AddProperty() {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Title Input */}
         <input
           type="text"
           name="title"
@@ -69,7 +76,7 @@ function AddProperty() {
           onChange={handleChange}
           required
         />
-
+        {/* Description Input */}
         <textarea
           name="description"
           placeholder="Description"
@@ -79,7 +86,7 @@ function AddProperty() {
           onChange={handleChange}
           required
         />
-
+        {/* Location Input */}
         <input
           type="text"
           name="location"
@@ -89,7 +96,7 @@ function AddProperty() {
           onChange={handleChange}
           required
         />
-
+        {/* Price Input */}
         <input
           type="number"
           name="price"
@@ -99,7 +106,7 @@ function AddProperty() {
           onChange={handleChange}
           required
         />
-
+        {/* Image Upload */}
         <div>
           <label className="block mb-2 font-medium text-gray-700">
             Upload Images
@@ -113,7 +120,7 @@ function AddProperty() {
             className="w-full border border-gray-300 rounded-lg p-2 bg-gray-50 cursor-pointer"
           />
         </div>
-
+        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-[#FF385C] hover:bg-[#e11d48] text-white font-semibold py-3 rounded-lg transition duration-300"

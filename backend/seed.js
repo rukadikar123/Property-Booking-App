@@ -8,16 +8,20 @@ import Property from "./Model/Listing.schema.js";
 
 dotenv.config();
 
+// Function to seed the database
 const seed = async () => {
   try {
     await MongodbConnect();
 
+    // Clear existing data
     await Booking.deleteMany();
     await Property.deleteMany();
     await User.deleteMany();
 
+    // Hash password for demo users
     const password = await bcrypt.hash("19857656", 10);
 
+    // Create a host user
     const hostUser = await User.create({
       fullname: "John Host",
       email: "host@example.com",
@@ -25,6 +29,7 @@ const seed = async () => {
       isHost: true,
     });
 
+    // Create a regular user
     const normalUser = await User.create({
       fullname: "Alice Guest",
       email: "user@example.com",
@@ -32,6 +37,7 @@ const seed = async () => {
       isHost: false,
     });
 
+    // Create two sample property listings
     const properties = await Property.insertMany([
       {
         title: "Cozy Cottage",
@@ -51,6 +57,7 @@ const seed = async () => {
       },
     ]);
 
+    // Create a booking by the normal user
     const booking = await Booking.create({
       property: properties[0]._id,
       user: normalUser._id,
@@ -67,4 +74,4 @@ const seed = async () => {
   }
 };
 
-seed()
+seed();

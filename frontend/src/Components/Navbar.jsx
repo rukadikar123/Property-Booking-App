@@ -6,13 +6,14 @@ import axios from "axios";
 import { FaBars } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 
-
 function Navbar() {
-  const { user } = useSelector((state) => state?.auth);
-    const [isOpen, setIsOpen] = useState(false);
+  const { user } = useSelector((state) => state?.auth); // Get user from Redux state
+  const [isOpen, setIsOpen] = useState(false); // State for mobile menu toggle
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Logout handler
   const handleLogout = async () => {
     try {
       await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
@@ -26,6 +27,7 @@ function Navbar() {
     }
   };
 
+  // Become a host handler
   const handleHost = async () => {
     try {
       const res = await axios.patch(
@@ -34,7 +36,7 @@ function Navbar() {
         { withCredentials: true }
       );
       console.log(res);
-      navigate("/add")
+      navigate("/add");
       dispatch(setUser(res?.data?.user));
     } catch (error) {
       console.log(error);
@@ -54,7 +56,10 @@ function Navbar() {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center space-x-8 font-medium text-lg">
-          <Link to="/listing" className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+          <Link
+            to="/listing"
+            className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+          >
             Homes
           </Link>
           <button
@@ -71,7 +76,10 @@ function Navbar() {
               Logout
             </button>
           ) : (
-            <Link to="/login" className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+            <Link
+              to="/login"
+              className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+            >
               Login
             </Link>
           )}
@@ -94,18 +102,38 @@ function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden flex flex-col items-start px-6 py-4 bg-white space-y-4 shadow-lg transition-all duration-300">
-          <Link to="/listing" className="text-gray-700 hover:text-[#FF385C] transition duration-200" onClick={() => setIsOpen(false)}>
+          <Link
+            to="/listing"
+            className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+            onClick={() => setIsOpen(false)}
+          >
             Homes
           </Link>
-          <button onClick={() => { handleHost(); setIsOpen(false); }} className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+          <button
+            onClick={() => {
+              handleHost();
+              setIsOpen(false);
+            }}
+            className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+          >
             Become a Host
           </button>
           {user ? (
-            <button onClick={() => { handleLogout(); setIsOpen(false); }} className="text-gray-700 hover:text-red-500 transition">
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsOpen(false);
+              }}
+              className="text-gray-700 hover:text-red-500 transition"
+            >
               Logout
             </button>
           ) : (
-            <Link to="/login" className="text-gray-700 hover:text-[#FF385C] transition duration-200" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/login"
+              className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+              onClick={() => setIsOpen(false)}
+            >
               Login
             </Link>
           )}
