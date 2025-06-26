@@ -53,6 +53,7 @@ export const placeBooking = async (req, res) => {
       checkIn,
       checkOut,
       totalPrice,
+      status: "ongoing",
     });
 
     return res.status(201).json({
