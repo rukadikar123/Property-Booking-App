@@ -8,7 +8,8 @@ const storage = multer.diskStorage({
   },
   // Set the filename for uploaded files
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName);
   },
 });
 
