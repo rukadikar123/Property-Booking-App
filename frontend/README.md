@@ -51,7 +51,7 @@ This is the frontend for a Property Booking App, built with **React** and **Vite
    npm run dev
    
    ```
-The app will be available at [Live Link](http://localhost:5173)
+The app will be available at [Live Link](https://property-booking-app-frontend.onrender.com)
 
 ## Project Structure
 

@@ -70,4 +70,4 @@ Property_Booking_App/
 
 ---
 
-### The app will be available at [Live Link](http://localhost:5173)
+### The app will be available at [Live Link](https://property-booking-app-frontend.onrender.com)
