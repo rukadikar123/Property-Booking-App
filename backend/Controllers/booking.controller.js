@@ -16,7 +16,8 @@ export const placeBooking = async (req, res) => {
     // Check for overlapping bookings on the same property
     const existingBooking = await Booking.findOne({
       property: propertyId,
-      $or: [{ checkIn: { $lt: checkOut }, checkOut: { $gt: checkIn } }],
+      checkIn: { $lt: checkOut },
+      checkOut: { $gt: checkIn },
     });
 
     if (existingBooking) {
