@@ -5,7 +5,7 @@ This is the backend API for a property booking application. It provides endpoint
 ## Base URL
 
 ```
-http://localhost:5000/api/
+https://property-booking-app-backend.onrender.com
 ```
 
 ---
