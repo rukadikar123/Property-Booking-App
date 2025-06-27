@@ -30,6 +30,9 @@ function Navbar() {
   // Become a host handler
   const handleHost = async () => {
     try {
+      if(user?.isHost){
+        return navigate("/add");
+      }
       const res = await axios.patch(
         `${import.meta.env.VITE_API_URL}/api/auth/become-host`,
         { isHost: true },
