@@ -27,7 +27,7 @@ function ListingDetails() {
   // Handle booking submission
   const handleBooking = async () => {
     try {
-       await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_URL}/api/booking/place-booking`,
         { propertyId: property?._id, checkIn, checkOut },
         { withCredentials: true }
