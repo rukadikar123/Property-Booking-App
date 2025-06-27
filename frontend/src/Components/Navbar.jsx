@@ -65,6 +65,12 @@ function Navbar() {
           >
             Homes
           </Link>
+          <Link
+            to="/my-bookings"
+            className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+          >
+            My Bookings
+          </Link>
           <button
             onClick={handleHost}
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
