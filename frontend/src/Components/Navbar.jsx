@@ -118,7 +118,7 @@ function Navbar() {
           >
             Homes
           </Link>
-           <Link
+          <Link
             to="/my-bookings"
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
           >

@@ -24,6 +24,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(cookieParser()); // Middleware to parse cookies
 
 // API Routes
