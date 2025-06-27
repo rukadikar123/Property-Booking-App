@@ -66,7 +66,7 @@ function Navbar() {
             onClick={handleHost}
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
           >
-            Become a Host
+            {user?.isHost ? "Add Property" : "Become a Host"}
           </button>
           {user ? (
             <button
@@ -116,7 +116,7 @@ function Navbar() {
             }}
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
           >
-            Become a Host
+            {user?.isHost ? "Add Property" : "Become a Host"}
           </button>
           {user ? (
             <button
