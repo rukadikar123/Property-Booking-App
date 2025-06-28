@@ -1,3 +1,4 @@
+import { uploadOnCloudinary } from "../config/cloudinary.js";
 import { generateToken } from "../config/generateToken.js";
 import User from "../Model/User.schema.js";
 import bcrypt from "bcryptjs";
@@ -196,6 +197,46 @@ export const becomeHost = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: `becomeHost: ${error.message}`,
+    });
+  }
+};
+
+export const editProfile = async (req, res) => {
+  try {
+    const userId = req?.user?._id;
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    let image;
+    if (req?.file) {
+      image = await uploadOnCloudinary(req.file.path);
+    }
+
+    if (!image) {
+      return res.status(400).json({
+        success: false,
+        message: "No image provided for update",
+      });
+    }
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { profilepic: image },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile Pic updated successfully",
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `editProfile: ${error.message}`,
     });
   }
 };

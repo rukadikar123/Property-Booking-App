@@ -93,7 +93,7 @@ function Navbar() {
             </Link>
           )}
           {user && (
-            <div className="w-10 h-10 rounded-full bg-[#FF385C] flex items-center justify-center text-white font-semibold">
+            <div onClick={()=>navigate('/profile')} className="w-10 h-10 cursor-pointer hover:scale-95 rounded-full bg-[#FF385C] flex items-center justify-center text-white font-semibold">
               {user?.fullname?.[0]?.toUpperCase() || "U"}
             </div>
           )}
@@ -110,14 +110,21 @@ function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden flex flex-col items-start px-6 py-4 bg-white space-y-4 shadow-lg transition-all duration-300">
-          <Link
+        <div className="md:hidden flex flex-col w-full items-start px-6 py-4 bg-white space-y-4 shadow-lg transition-all duration-300">
+          <div className="flex justify-between w-full items-center">
+            <Link
             to="/listing"
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
             onClick={() => setIsOpen(false)}
           >
             Homes
           </Link>
+          {user && (
+            <div onClick={()=>navigate('/profile')} className="w-6 h-6 rounded-full cursor-pointer hover:scale-105 bg-[#FF385C] flex items-center justify-center text-white font-semibold">
+              {user?.fullname?.[0]?.toUpperCase() || "U"}
+            </div>
+          )}
+          </div>
           <Link
             to="/my-bookings"
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"

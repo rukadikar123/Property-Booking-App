@@ -9,6 +9,7 @@ import ListingDetails from "./Pages/ListingDetails";
 import MyBookings from "./Pages/MyBookings";
 import AddProperty from "./Pages/AddProperty";
 import {ToastContainer} from 'react-toastify'
+import Profile from "./Pages/Profile";
 
 function App() {
   useGetCurrentUser()     // Custom hook to fetch and set the current logged-in user
@@ -30,6 +31,7 @@ const {user,loading}=useSelector(state=> state?.auth)    // Get user and loading
         <Route path="/listing/:id" element={user ? <ListingDetails/> : <Navigate to='/listing' /> } />
         <Route path="/my-bookings" element={user ? <MyBookings/> : <Navigate to='/listing' /> } />
         <Route path="/add" element={user ? <AddProperty/> : <Navigate to='/listing' /> } />
+        <Route path="/profile" element={ <Profile/>} />
         <Route />
       </Routes>
       <ToastContainer/>
