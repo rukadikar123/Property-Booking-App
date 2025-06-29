@@ -203,7 +203,9 @@ export const becomeHost = async (req, res) => {
 
 export const editProfile = async (req, res) => {
   try {
-    const userId = req?.user?._id;
+    const userId = req?.user?._id; // Extract the user ID from the authenticated user object
+
+    // If user is not authenticated or ID is missing
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -212,28 +214,34 @@ export const editProfile = async (req, res) => {
     }
 
     let image;
+    // If file is uploaded, upload it to Cloudinary
     if (req?.file) {
       image = await uploadOnCloudinary(req.file.path);
     }
 
+    // If image upload failed or no file was provided
     if (!image) {
       return res.status(400).json({
         success: false,
         message: "No image provided for update",
       });
     }
+
+    // Update the user's profilepic in the database and return the updated user
     const user = await User.findByIdAndUpdate(
       userId,
-      { profilepic: image },
-      { new: true }
+      { profilepic: image }, // only update profilepic
+      { new: true } // return the updated user
     );
 
+    // Respond with success and updated user info
     return res.status(200).json({
       success: true,
       message: "Profile Pic updated successfully",
       user,
     });
   } catch (error) {
+    // Handle any unexpected server errors
     return res.status(500).json({
       success: false,
       message: `editProfile: ${error.message}`,
