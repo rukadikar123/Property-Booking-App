@@ -36,7 +36,7 @@ function ListingDetails() {
       toast("Booking successful!");
       navigate("/my-bookings");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       // Handle already booked dates
       if (
         error.response &&
@@ -45,8 +45,8 @@ function ListingDetails() {
       ) {
         toast.error("Selected dates are already booked.");
       } else {
-        console.error(error);
-        toast.error("Something went wrong. Please try again.");
+        // console.error(error);
+        toast.error(`${error?.response?.data?.message}`)
       }
     }
   };

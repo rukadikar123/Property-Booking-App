@@ -7,7 +7,7 @@ export const Signup = async (req, res) => {
   try {
     const { fullname, email, password } = req.body;
     // Validate input
-    if ([fullname, email, password].some((item) => item === "")) {
+    if ([fullname, email, password].some((item) => item.trim() === "")) {
       return res.status(400).json({
         success: false,
         message: "all fields required",
@@ -65,7 +65,7 @@ export const Login = async (req, res) => {
     const { email, password } = req.body;
 
     // Validate input
-    if ([email, password].some((item) => item === "")) {
+    if ([email, password].some((item) => item.trim() === "")) {
       return res.status(400).json({
         success: false,
         message: "all fields required",
