@@ -61,9 +61,10 @@ const seed = async () => {
     const booking = await Booking.create({
       property: properties[0]._id,
       user: normalUser._id,
-      checkIn: new Date("2025-06-24"),
-      checkOut: new Date("2025-06-26"),
+      checkIn: new Date("2025-07-24"),
+      checkOut: new Date("2025-07-25"),
       totalPrice: 4000,
+      status: "ongoing",
     });
 
     console.log("✅ Seed data inserted");

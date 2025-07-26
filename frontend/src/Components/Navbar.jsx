@@ -19,7 +19,7 @@ function Navbar({ setSearchedProperties }) {
   const handleSearch = async () => {
     try {
       if (!searchTerm.trim()) {
-        toast.warn("Query is required");
+        toast.warn("Please enter a location to search.");
         return;
       }
 
