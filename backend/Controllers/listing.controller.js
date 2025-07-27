@@ -146,7 +146,7 @@ export const getSearchProperty=async(req,res)=>{
   } catch (error) {
      return res.status(500).json({
       success: false,
-      message: `addProperty: ${error.message}`,
+      message: `getSearchProperty: ${error.message}`,
     });
   }
 }

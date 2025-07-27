@@ -28,6 +28,10 @@ const PropertySchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    ratings:{
+      type:Number,
+      default:0
+    }
   },
   { timestamps: true }
 );

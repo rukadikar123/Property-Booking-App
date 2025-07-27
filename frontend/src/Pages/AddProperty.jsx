@@ -51,6 +51,15 @@ function AddProperty() {
       );
       toast("Property added successfully!");
       console.log(res.data);
+
+      setFormData({
+        title: "",
+        description: "",
+        location: "",
+        price: "",
+      });
+
+      setImages([]);
     } catch (error) {
       console.error("Add property error:", error);
       toast.error(error?.response?.data?.message);
