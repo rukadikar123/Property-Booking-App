@@ -8,7 +8,7 @@ function ListingDetails() {
   const [property, setProperty] = useState(null); // State for property data
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -52,44 +52,12 @@ function ListingDetails() {
   };
 
   useEffect(() => {
-    const checkPendingRating=async()=>{
-    try {
-        let response=await axios.get(`${import.meta.env.VITE_API_URL}/api/rating/isPending`,{withCredentials:true})
-      console.log(response);
-      
-        if (response?.data?.isPending){
-          setShowPopup(true)
-        }
-
-        
-    } catch (error) {
-       toast.error(`${error?.response?.data?.message}`);
-    }
-  }
-
-  checkPendingRating()
-  
-  }, [])
-  
-  const handleRateNow=async()=>{
-    navigate('/my-bookings')
-    setShowPopup(false)
-  }
-
-  useEffect(() => {
     fetchProperty();
   }, [id]);
 
   return (
     <section className="min-h-screen bg-gray-50 py-12 px-4">
-      <div>
-        {showPopup && (
-          <PendingRatingPopup
-            onClose={() => setShowPopup(false)}
-            onRateNow={handleRateNow}
-          />
-        )}
-      </div>
+     
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Title */}
         <h1 className="text-4xl font-bold text-[#FF385C]">{property?.title}</h1>

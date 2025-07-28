@@ -1,5 +1,6 @@
 import Booking from "../Model/Booking.schema.js";
 import Property from "../Model/Listing.schema.js";
+import Rating from "../Model/Rating.schema.js";
 
 export const placeBooking = async (req, res) => {
   try {
@@ -94,11 +95,26 @@ export const getUsersBookings = async (req, res) => {
       });
     }
 
+    const BookingsWithRatingStatus=await Promise.all(
+      bookings.map(async (booking)=>{
+          const rating=await Rating.findOne({
+            user:req.user._id,
+            property:booking.property._id
+          })
+          return {
+            ...booking._doc,
+            alreadyRated: !!rating,
+            ratingValue: rating ? rating.rating : null
+          }
+      })
+    )
+
+
     // Send bookings in response
     return res.status(200).json({
       success: true,
       message: "fetched all Bookings successfully",
-      bookings,
+      BookingsWithRatingStatus,
     });
   } catch (error) {
     return res.status(500).json({
