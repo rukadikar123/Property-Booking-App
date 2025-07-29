@@ -9,13 +9,27 @@ await MongodbConnect(); // Ensure DB connection
 
 console.log("[CRON] cron.js loaded ✅");
 // Schedule: Every day at midnight (server time)
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   const now = new Date();
-  
+
+  // Convert current time to IST
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is +5:30 from UTC
+  const nowIST = new Date(now.getTime() + istOffset);
+
+  // Calculate start of today in IST
+    const startOfTodayIST = new Date(nowIST);
+    startOfTodayIST.setHours(0, 0, 0, 0);
+
+ // Convert start of today IST to UTC
+    const startOfTodayUTC = new Date(startOfTodayIST.getTime() - istOffset);
+
   // Update all bookings where checkOut date is in the past and status is still "ongoing"
   const result = await Booking.updateMany(
-    { checkOut: { $lt: now }, status: "ongoing" },
+    { checkOut: { $lt: startOfTodayUTC }, status: "ongoing" },
     { $set: { status: "completed" } }
   );
   console.log(`[CRON] ✅ Updated ${result.modifiedCount} bookings`);
+},
+{
+  timezone: "Asia/Kolkata" // ⬅️ this sets the cron to IST
 });
