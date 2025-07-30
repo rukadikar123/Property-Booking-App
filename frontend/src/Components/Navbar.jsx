@@ -123,6 +123,11 @@ function Navbar({ setSearchedProperties }) {
           >
             {user?.isHost ? "Add Property" : "Become a Host"}
           </button>
+          {user && (
+            <Link to="/my-wishlist" className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+              Wishlist
+            </Link>
+          )}
           {user ? (
             <button
               onClick={handleLogout}

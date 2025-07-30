@@ -7,6 +7,7 @@ import authRoutes from "./Routes/auth.routes.js";
 import listingRoutes from "./Routes/listing.routes.js";
 import bookingRoutes from "./Routes/booking.routes.js";
 import ratingRoutes from './Routes/rating.routes.js'
+import wishlistRoutes from "./Routes/wishlist.routes.js"
 const app = express(); // Initialize express app
 
 dotenv.config(); // Load environment variables
@@ -33,7 +34,8 @@ app.use(cookieParser()); // Middleware to parse cookies
 app.use("/api/auth", authRoutes); // Auth routes
 app.use("/api/listing", listingRoutes); // Property listing routes
 app.use("/api/booking", bookingRoutes); // Booking routes
-app.use("/api/rating", ratingRoutes); // Booking routes
+app.use("/api/rating", ratingRoutes); // Rating routes
+app.use("/api/wishlist", wishlistRoutes); // Wishlist routes
 
 import "./cron.js"; // Import scheduled cron job (runs on startup)
 
