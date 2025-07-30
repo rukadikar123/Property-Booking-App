@@ -197,6 +197,11 @@ function Navbar({ setSearchedProperties }) {
           >
             {user?.isHost ? "Add Property" : "Become a Host"}
           </button>
+            {user && (
+            <Link to="/my-wishlist" className="text-gray-700 hover:text-red-500 transition">
+              Wishlist
+            </Link>
+          )}
           {user ? (
             <button
               onClick={() => {
