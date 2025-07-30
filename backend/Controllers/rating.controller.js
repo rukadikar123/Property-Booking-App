@@ -1,5 +1,6 @@
 import Booking from "../Model/Booking.schema.js";
 import Rating from "../Model/Rating.schema.js";
+import { updatePropertyRating } from "../utils/updatePropertyRating.js";
 
 export const pendingRatings = async (req, res) => {
   try {
@@ -74,6 +75,8 @@ export const addRating = async (req, res) => {
       rating,
       comment
     })
+
+  await   updatePropertyRating(property)
 
     return res.status(200).json({
       success:true,

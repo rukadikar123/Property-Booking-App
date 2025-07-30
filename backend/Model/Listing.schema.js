@@ -31,7 +31,12 @@ const PropertySchema = new mongoose.Schema(
     ratings:{
       type:Number,
       default:0
+    },
+    ratingCount:{
+      type:Number,
+      default:0
     }
+
   },
   { timestamps: true }
 );
@@ -40,3 +45,5 @@ const PropertySchema = new mongoose.Schema(
 const Property = mongoose.model("Property", PropertySchema);
 
 export default Property;
+
+

@@ -4,6 +4,7 @@ import { setProperties } from "../redux/propertySlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { IoStar } from "react-icons/io5";
 import { toast } from "react-toastify";
 
 function PropertyCard({ fetchWishlist }) {
@@ -19,7 +20,7 @@ function PropertyCard({ fetchWishlist }) {
         { propertyId: property._id },
         { withCredentials: true }
       );
-      toast.success(response?.data?.message)
+      toast.success(response?.data?.message);
       fetchWishlist();
     } catch (error) {
       console.log("fetch property error", error);
@@ -44,8 +45,6 @@ function PropertyCard({ fetchWishlist }) {
   useEffect(() => {
     fetchProperties();
   }, []);
-
- 
 
   return (
     <>
@@ -80,15 +79,21 @@ function PropertyCard({ fetchWishlist }) {
                     <p className="text-sm text-gray-500">
                       {property?.location}
                     </p>
-                    <p className="text-[#FF385C] font-bold text-base mt-1">
-                      ₹ {property?.price?.toLocaleString()}
-                    </p>
+                    <div className="flex justify-between">
+                      <p className="text-[#FF385C] font-bold text-base mt-1">
+                        ₹ {property?.price?.toLocaleString()}
+                      </p>
+                      <div className="flex items-center gap-1">
+                        <IoStar size={20} className="text-black/80" />
+                        <span className="text-sm text-gray-700">{property?.ratings}</span>
+                      </div>
+                    </div>
                   </div>
                   <div
                     onClick={(e) => wishlistHandler(e, property)}
                     className="absolute top-2 right-2 text-2xl"
                   >
-                    {isWishlisted ? "❤": "🤍" }
+                    {isWishlisted ? "❤" : "🤍"}
                   </div>
                 </div>
               );

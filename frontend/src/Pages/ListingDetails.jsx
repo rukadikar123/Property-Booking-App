@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { IoStar } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -8,7 +9,6 @@ function ListingDetails() {
   const [property, setProperty] = useState(null); // State for property data
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-
 
   const navigate = useNavigate();
 
@@ -57,7 +57,6 @@ function ListingDetails() {
 
   return (
     <section className="min-h-screen bg-gray-50 py-12 px-4">
-     
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Title */}
         <h1 className="text-4xl font-bold text-[#FF385C]">{property?.title}</h1>
@@ -87,9 +86,24 @@ function ListingDetails() {
         </div>
 
         {/* Location */}
-        <div>
-          <h2 className="text-xl font-semibold mb-1 text-gray-800">Location</h2>
-          <p className="text-gray-600">{property?.location}</p>
+        <div className="flex items-center gap-80">
+          <div>
+            <h2 className="text-xl font-semibold mb-1 text-gray-800">
+              Location
+            </h2>
+            <p className="text-gray-600">{property?.location}</p>
+          </div>
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-1">
+              <IoStar size={20} className="text-black/80" />
+            <span className="text-sm text-gray-700 font-semibold">{property?.ratings}</span>
+            </div>
+             <div className="w-px h-6 bg-gray-300" />
+            <div className="flex flex-col font-bold items-center">
+              <span className="text-sm text-gray-700">{property?.ratingCount}</span>
+              <span className="text-sm text-gray-700">Reviews</span>
+            </div>
+          </div>
         </div>
 
         {/* Booking Box */}
@@ -123,7 +137,7 @@ function ListingDetails() {
 
           <button
             onClick={handleBooking}
-            className="w-full bg-[#FF385C] hover:bg-[#e11d48] text-white font-semibold py-3 rounded-lg transition duration-300"
+            className="w-full bg-[#FF385C] hover:bg-[#e11d48] outline-2 ring-black ring-1 text-white font-semibold py-3 rounded-lg transition duration-300"
           >
             Book Now
           </button>
