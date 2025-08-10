@@ -10,7 +10,7 @@ export const placeBooking = async (req, res) => {
     if (!propertyId || !checkIn || !checkOut) {
       return res.status(404).json({
         success: false,
-        message: "all fields are required",
+        message: "Please select dates",
       });
     }
 
@@ -85,7 +85,7 @@ export const getUsersBookings = async (req, res) => {
     const bookings = await Booking.find({ user: req.user._id }).populate(
       "property", // Populate property details
       "title location images price" // Only select these fields from the property
-    );
+    ).sort({ createdAt: -1 })
 
     // If no bookings found, return appropriate message
     if (!bookings || bookings.length === 0) {

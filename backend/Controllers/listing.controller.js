@@ -128,7 +128,11 @@ export const getSearchProperty=async(req,res)=>{
     }
 
     const SearchedDestinations=await Property.find({
-      location:{$regex:query, $options:"i"},
+      $or:[
+        { location: { $regex: query, $options: "i" } },
+        { title: { $regex: query, $options: "i" } },
+
+      ]
     })
 
     if(SearchedDestinations.length===0){

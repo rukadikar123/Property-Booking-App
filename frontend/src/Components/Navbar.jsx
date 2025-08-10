@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../redux/authSlice";
@@ -15,6 +15,13 @@ function Navbar({ setSearchedProperties }) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(!searchTerm){
+    navigate("/listing")
+  }
+  }, [])
+  
 
   const handleSearch = async () => {
     try {
@@ -31,7 +38,7 @@ function Navbar({ setSearchedProperties }) {
         }
       );
       setSearchedProperties(response?.data?.SearchedDestinations);
-      console.log(response);
+      console.log("searched result",response);
       setSearchTerm("");
       navigate("/search");
     } catch (error) {
