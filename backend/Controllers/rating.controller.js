@@ -50,45 +50,88 @@ export const addRating = async (req, res) => {
     const { property, rating, comment } = req.body;
     const userId = req.user._id;
 
-    if(!rating){
+    if (!rating) {
       return res.status(400).json({
-        success:false,
-        message:"Rating Is required to add"
-      })
+        success: false,
+        message: "Rating Is required to add",
+      });
     }
 
-    const alreadyRated=await Rating.findOne({
-        user:userId,
-        property  
-    })
+    const alreadyRated = await Rating.findOne({
+      user: userId,
+      property,
+    });
 
-    if(alreadyRated){
+    if (alreadyRated) {
       return res.status(400).json({
-        success:false,
-        message:"You have already rated this property"
-      })
+        success: false,
+        message: "You have already rated this property",
+      });
     }
 
-    const newRating= await Rating.create({
-      user:userId,
+    const newRating = await Rating.create({
+      user: userId,
       property,
       rating,
-      comment
-    })
+      comment,
+    });
 
-  await   updatePropertyRating(property)
+    await updatePropertyRating(property);
 
     return res.status(200).json({
-      success:true,
+      success: true,
       newRating,
-      message:"Rating submitted successfully"
-    })
-
-
+      message: "Rating submitted successfully",
+    });
   } catch (error) {
-     return res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: `addRating: ${error.message}`,
+    });
+  }
+};
+
+export const getReviews = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Property ID is required",
+      });
+    }
+
+    let ratings = await Rating.find({
+      property: id,
+    })
+      .populate("user", "fullname profilepic")
+      .sort({ createdAt: -1 });
+
+    if (ratings.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No Reviews found",
+      });
+    }
+
+    if (req.user) {
+      ratings = ratings.sort((a, b) => {
+        if (a.user._id.toString() === req.user._id.toString()) return -1;
+        if (b.user._id.toString() === req.user._id.toString()) return 1;
+        return 0;
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Reviews fetched successfully",
+      ratings,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `getReviews: ${error.message}`,
     });
   }
 };

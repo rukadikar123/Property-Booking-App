@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { IoStar } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import ReviewsPopup from "../Components/ReviewsPopup";
 
 function ListingDetails() {
   const { id } = useParams(); // Get property ID from URL
   const [property, setProperty] = useState(null); // State for property data
+  const [reviews,setReviews]=useState(null)
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
+  const [isReviewPopupOpen, setIsReviewPopupOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,6 +23,20 @@ function ListingDetails() {
         { withCredentials: true }
       );
       setProperty(res?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/rating/reviews/${id}`,
+        { withCredentials: true }
+      );
+      setReviews(response?.data?.ratings)
+      console.log(response);
+      
     } catch (error) {
       console.log(error);
     }
@@ -53,10 +70,18 @@ function ListingDetails() {
 
   useEffect(() => {
     fetchProperty();
+    fetchReviews()
   }, [id]);
 
   return (
     <section className="min-h-screen bg-gray-50 py-12 px-4">
+      {isReviewPopupOpen && (
+        <ReviewsPopup
+          property={property}
+          reviews={reviews}
+          onclose={() => setIsReviewPopupOpen(false)}
+        />
+      )}
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Title */}
         <h1 className="text-4xl font-bold text-[#FF385C]">{property?.title}</h1>
@@ -96,11 +121,18 @@ function ListingDetails() {
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-1">
               <IoStar size={20} className="text-black/80" />
-            <span className="text-sm text-gray-700 font-semibold">{property?.ratings}</span>
+              <span className="text-sm text-gray-700 font-semibold">
+                {property?.ratings}
+              </span>
             </div>
-             <div className="w-px h-6 bg-gray-300" />
-            <div className="flex flex-col font-bold items-center">
-              <span className="text-sm text-gray-700">{property?.ratingCount}</span>
+            <div className="w-px h-6 bg-gray-300" />
+            <div
+              onClick={() => setIsReviewPopupOpen(true)}
+              className="flex flex-col font-bold items-center cursor-pointer"
+            >
+              <span className="text-sm text-gray-700">
+                {property?.ratingCount}
+              </span>
               <span className="text-sm text-gray-700">Reviews</span>
             </div>
           </div>
