@@ -28,14 +28,16 @@ function ListingDetails() {
     }
   };
 
+  // Function to fetch all reviews for a specific property
   const fetchReviews = async () => {
     try {
+        // Make a GET request to the backend API to get reviews for the given property `id`
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/rating/reviews/${id}`,
         { withCredentials: true }
       );
-      setReviews(response?.data?.ratings)
-      console.log(response);
+      setReviews(response?.data?.ratings)       // Update the `reviews` state with the array of ratings from the API response
+      // console.log(response);
       
     } catch (error) {
       console.log(error);
@@ -122,7 +124,7 @@ function ListingDetails() {
             <div className="flex items-center gap-1">
               <IoStar size={20} className="text-black/80" />
               <span className="text-sm text-gray-700 font-semibold">
-                {property?.ratings}
+                {property?.ratings.toFixed(2)}
               </span>
             </div>
             <div className="w-px h-6 bg-gray-300" />

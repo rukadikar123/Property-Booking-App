@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProperties } from "../redux/propertySlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { IoStar } from "react-icons/io5";
 import { toast } from "react-toastify";
 
 function PropertyCard({ fetchWishlist }) {
-  const { properties, wishlist } = useSelector((state) => state?.property); // Access properties from Redux store
+  const { properties, wishlist } = useSelector((state) => state?.property); // Access properties and wishlist from Redux store
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Toggle wishlist for a property
   const wishlistHandler = async (e, property) => {
     e.stopPropagation();
     try {
@@ -85,10 +85,13 @@ function PropertyCard({ fetchWishlist }) {
                       </p>
                       <div className="flex items-center gap-1">
                         <IoStar size={20} className="text-black/80" />
-                        <span className="text-sm text-gray-700">{property?.ratings}</span>
+                        <span className="text-sm text-gray-700">
+                          {property?.ratings.toFixed(2)}
+                        </span>
                       </div>
                     </div>
                   </div>
+                  {/* Wishlist button */}
                   <div
                     onClick={(e) => wishlistHandler(e, property)}
                     className="absolute top-2 right-2 text-2xl"

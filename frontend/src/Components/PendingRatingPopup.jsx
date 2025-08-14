@@ -1,11 +1,19 @@
-import React from 'react'
+import React from "react";
 
-function PendingRatingPopup({onRateNow,onClose}) {
+// Popup component to remind the user about a pending rating
+function PendingRatingPopup({ onRateNow, onClose }) {
   return (
-     <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center">
+    // Full-screen dark overlay
+    <section className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center">
+      {/* Popup container */}
       <div className="absolute top-10 transform -translate-x-1/2 left-1/2 bg-white rounded-xl shadow-lg p-6 w-full max-w-sm text-center space-y-4">
+        {/* Popup title */}
         <h2 className="text-lg font-semibold text-gray-800">Pending Rating</h2>
-        <p className="text-gray-600">You haven’t rated your last booking yet.</p>
+        {/* Message text */}
+        <p className="text-gray-600">
+          You haven’t rated your last booking yet.
+        </p>
+        {/* Action buttons */}
         <div className="flex justify-center gap-4">
           <button
             onClick={onRateNow}
@@ -21,8 +29,8 @@ function PendingRatingPopup({onRateNow,onClose}) {
           </button>
         </div>
       </div>
-    </div>
-  )
+    </section>
+  );
 }
 
-export default PendingRatingPopup
+export default PendingRatingPopup;

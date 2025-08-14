@@ -11,34 +11,36 @@ import { toast } from "react-toastify";
 function Navbar({ setSearchedProperties }) {
   const { user } = useSelector((state) => state?.auth); // Get user from Redux state
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu toggle
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // State for storing the user's search input
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
+  // Redirect to /listing if searchTerm is empty when component mounts
   useEffect(() => {
     if(!searchTerm){
     navigate("/listing")
   }
   }, [])
   
-
+// Function to handle the property search logic
   const handleSearch = async () => {
     try {
+      // If searchTerm is empty or whitespace, show a warning toast
       if (!searchTerm.trim()) {
         toast.warn("Please enter a location to search.");
         return;
       }
-
+ // Make a GET request to fetch properties matching the search term
       let response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/listing/search`,
         {
-          params: { query: searchTerm },
-          withCredentials: true,
+          params: { query: searchTerm },    // Pass searchTerm as query param
+          withCredentials: true,            // Include cookies/credentials in request
         }
       );
-      setSearchedProperties(response?.data?.SearchedDestinations);
-      console.log("searched result",response);
+      setSearchedProperties(response?.data?.SearchedDestinations);     // Save the fetched search results into state
+      // console.log("searched result",response);
       setSearchTerm("");
       navigate("/search");
     } catch (error) {

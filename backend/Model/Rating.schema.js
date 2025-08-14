@@ -11,6 +11,11 @@ const RatingSchema=new mongoose.Schema({
         ref:"Property",
         required:true
     },
+    booking:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Booking",
+        required:true
+    },
     rating:{
         type:Number,
         required:true,

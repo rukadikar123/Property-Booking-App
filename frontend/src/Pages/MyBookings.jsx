@@ -5,14 +5,15 @@ import { toast } from "react-toastify";
 import PendingRatingPopup from "../Components/PendingRatingPopup";
 
 function MyBookings() {
-  const [bookings, setBookings] = useState([]);
-  const [showRatingPopup, setShowRatingPopup] = useState(false);
+  const [bookings, setBookings] = useState([]); // Stores all bookings of the logged-in user
+  const [showRatingPopup, setShowRatingPopup] = useState(false); // Controls visibility of "Rate This Home" popup
   const [selectedBooking, setSelectedBooking] = useState(null); // holds which booking user is rating
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [rating, setRating] = useState(0); // Rating value selected by user (1-5 stars)
+  const [comment, setComment] = useState(""); // Optional comment given by user along with rating
+  const [showPopup, setShowPopup] = useState(false); // Controls visibility of "Pending Rating" reminder popup
+  const [loading, setLoading] = useState(false); // Tracks loading state during rating submission
 
+  // Runs once on mount to check if the user has a pending rating to give
   useEffect(() => {
     const checkPendingRating = async () => {
       try {
@@ -22,6 +23,7 @@ function MyBookings() {
         );
         console.log(response);
 
+        // If API says rating is pending, show the reminder popup
         if (response?.data?.isPending) {
           setShowPopup(true);
         }
@@ -33,16 +35,20 @@ function MyBookings() {
     checkPendingRating();
   }, []);
 
+  // Handles "Rate Now" action from pending rating popup
   const handleRateNow = async () => {
     setShowPopup(false);
   };
 
+  // Updates rating state when user selects stars
   const handleRatingChange = (newRating) => {
     setRating(newRating);
-    console.log(newRating);
+    // console.log(newRating);
   };
 
+  // Submits the rating for the selected booking
   const submitRating = async () => {
+    // Validation: Ensure a booking is selected
     if (!selectedBooking) {
       toast.error("No booking selected.");
       return;
@@ -58,6 +64,7 @@ function MyBookings() {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/rating/add`,
         {
+          bookingId: selectedBooking._id,
           property: selectedBooking.property._id,
           rating,
           comment,
@@ -69,7 +76,7 @@ function MyBookings() {
       setRating(0);
       setComment("");
       setSelectedBooking(null);
-      fetchMyBookings();
+      fetchMyBookings(); // Refresh bookings list
     } catch (error) {
       console.log(error);
       toast.error(`${error?.response?.data?.message}`);
@@ -98,6 +105,7 @@ function MyBookings() {
   return (
     <>
       <section className="min-h-screen bg-gray-100 py-12 px-4">
+        {/* Show pending rating reminder if needed */}
         <div>
           {showPopup && (
             <PendingRatingPopup
@@ -158,11 +166,13 @@ function MyBookings() {
                       </p>
                     </div>
                   </div>
+                  {/* Conditional action buttons */}
                   {(() => {
                     if (booking?.alreadyRated) {
+                      // If already rated, show rating info
                       return (
                         <>
-                          <button 
+                          <button
                             disabled
                             className="px-4 py-2 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
                           >
@@ -181,6 +191,7 @@ function MyBookings() {
                         </>
                       );
                     } else if (booking?.status !== "completed") {
+                      // If booking not completed yet, can't rate
                       return (
                         <button
                           disabled
@@ -190,6 +201,7 @@ function MyBookings() {
                         </button>
                       );
                     } else {
+                      // If completed and not rated, show "Rate This Home"
                       return (
                         <button
                           onClick={() => {
@@ -209,6 +221,7 @@ function MyBookings() {
           )}
         </div>
       </section>
+      {/* Rating Popup */}
       {showRatingPopup && (
         <>
           {/* Background Overlay */}
@@ -219,7 +232,7 @@ function MyBookings() {
             <h2 className="text-xl font-bold text-center mb-4 text-[#FF385C]">
               Rate Your Stay
             </h2>
-
+            {/* Star rating input */}
             <ReactStars
               count={5}
               onChange={handleRatingChange}
@@ -227,6 +240,7 @@ function MyBookings() {
               value={rating}
               color2={"#FF385C"}
             />
+            {/* Optional comment */}
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
@@ -234,6 +248,7 @@ function MyBookings() {
               className="w-full mt-4 border border-gray-300 rounded-md p-2"
               rows={4}
             />
+            {/* Action buttons */}
             <div className="flex justify-end mt-6 space-x-4">
               <button
                 onClick={() => setShowRatingPopup(false)}

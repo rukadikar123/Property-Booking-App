@@ -82,10 +82,12 @@ export const placeBooking = async (req, res) => {
 export const getUsersBookings = async (req, res) => {
   try {
     // Fetch bookings where the user ID matches the currently logged-in user
-    const bookings = await Booking.find({ user: req.user._id }).populate(
-      "property", // Populate property details
-      "title location images price" // Only select these fields from the property
-    ).sort({ createdAt: -1 })
+    const bookings = await Booking.find({ user: req.user._id })
+      .populate(
+        "property", // Populate property details
+        "title location images price" // Only select these fields from the property
+      )
+      .sort({ createdAt: -1 });
 
     // If no bookings found, return appropriate message
     if (!bookings || bookings.length === 0) {
@@ -95,20 +97,25 @@ export const getUsersBookings = async (req, res) => {
       });
     }
 
-    const BookingsWithRatingStatus=await Promise.all(
-      bookings.map(async (booking)=>{
-          const rating=await Rating.findOne({
-            user:req.user._id,
-            property:booking.property._id
-          })
-          return {
-            ...booking._doc,
-            alreadyRated: !!rating,
-            ratingValue: rating ? rating.rating : null
-          }
+    // Wait for all asynchronous operations inside the map to complete
+    const BookingsWithRatingStatus = await Promise.all(
+      // Loop through each booking and perform async operations
+      bookings.map(async (booking) => {
+        // Find a rating document where the user matches the logged-in user
+        // and the booking matches the current booking's ID
+        const rating = await Rating.findOne({
+          user: req.user._id,
+          booking: booking._id,
+        });
+        // Return a new object containing all original booking properties,
+        // plus additional fields about the rating status
+        return {
+          ...booking._doc, // Spread the raw MongoDB document fields
+          alreadyRated: !!rating, // Boolean: true if rating exists, false otherwise
+          ratingValue: rating ? rating.rating : null, // Actual rating value if found, otherwise null
+        };
       })
-    )
-
+    );
 
     // Send bookings in response
     return res.status(200).json({

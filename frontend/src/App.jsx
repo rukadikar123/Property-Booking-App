@@ -17,31 +17,31 @@ import { setWishlist } from "./redux/propertySlice";
 import axios from "axios";
 
 function App() {
-  const [searchedProperties, setSearchedProperties] = useState([]);
- 
+  const [searchedProperties, setSearchedProperties] = useState([]); // State variable to store the list of properties matching the search query
+
   useGetCurrentUser(); // Custom hook to fetch and set the current logged-in user
 
   const { user, loading } = useSelector((state) => state?.auth); // Get user and loading status from Redux store
 
-   // Access wishlist from Redux store
+  // Access wishlist from Redux store
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
+  // Function to fetch the user's wishlist from the API
   const fetchWishlist = async () => {
     try {
+      // Send GET request to the wishlist endpoint with credentials (cookies/session)
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/wishlist/allWishlist`,
         { withCredentials: true }
       );
-      dispatch(setWishlist(response?.data?.wishlist));
-      console.log("fetchWishlist",response);
-      
+      dispatch(setWishlist(response?.data?.wishlist)); // Update the Redux store with the fetched wishlist data
+      // console.log("fetchWishlist",response);
     } catch (error) {
       console.log("fetch property error", error);
     }
   };
 
+  // Automatically fetch wishlist when the `user` changes (e.g., login/logout)
   useEffect(() => {
     fetchWishlist();
   }, [user]);
@@ -51,7 +51,7 @@ function App() {
   return (
     <>
       {/* Global navigation bar */}
-      <Navbar  setSearchedProperties={setSearchedProperties} />
+      <Navbar setSearchedProperties={setSearchedProperties} />
       {/* Define routes */}
       <Routes>
         <Route
@@ -60,7 +60,13 @@ function App() {
         />
         <Route
           path="/listing"
-          element={user ? <PropertyCard fetchWishlist={fetchWishlist} /> : <Navigate to="/login" />}
+          element={
+            user ? (
+              <PropertyCard fetchWishlist={fetchWishlist} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/signup"
@@ -83,8 +89,13 @@ function App() {
           element={user ? <AddProperty /> : <Navigate to="/listing" />}
         />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/search" element={<SearchedDestinations  searchedProperties={searchedProperties} />} />
-        <Route path="/my-wishlist" element={<WishList/>} />
+        <Route
+          path="/search"
+          element={
+            <SearchedDestinations searchedProperties={searchedProperties} />
+          }
+        />
+        <Route path="/my-wishlist" element={<WishList />} />
         <Route />
       </Routes>
       <ToastContainer />

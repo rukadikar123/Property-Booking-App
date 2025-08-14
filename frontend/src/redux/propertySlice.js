@@ -5,13 +5,14 @@ const propertySlice = createSlice({
   name: "property",
   initialState: {
     properties: null, // Array of property listings
-    wishlist: null,
+    wishlist: null,   // Stores the user's wishlist
   },
   reducers: {
     // Sets the list of properties
     setProperties: (state, action) => {
       state.properties = action.payload;
     },
+    // Update the wishlist array in the state
     setWishlist: (state, action) => {
       state.wishlist = action.payload;
     },
