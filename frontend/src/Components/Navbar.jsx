@@ -91,7 +91,7 @@ function Navbar({ setSearchedProperties }) {
           to="/listing"
           className="text-3xl font-extrabold text-[#FF385C] hover:text-[#e11d48] transition duration-200  tracking-tight"
         >
-          Airbnb
+          StayFinder
         </Link>
         <div className="flex flex-1 max-w-[60vw] md:max-w-[25vw] p-1 space-x-2 items-center border-2  border-[#FF385C] rounded-3xl ">
           <IoSearch
