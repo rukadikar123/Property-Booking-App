@@ -21,12 +21,11 @@ app.use(express.urlencoded({ extended: true }));
 // Enable CORS for frontend origin (allow credentials like cookies)
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://property-booking-app-frontend.onrender.com",
     credentials: true,
   })
 );
 
-// https://property-booking-app-frontend.onrender.com
 
 app.use(cookieParser()); // Middleware to parse cookies
 

@@ -1,23 +1,20 @@
 # 🏠 Property Booking App (MERN Stack)
 
-This is a **Full-Stack Property Booking Web Application** built using the **MERN stack** (MongoDB, Express.js, React.js, Node.js). It allows users to browse, book, and manage properties. Hosts can list new properties and manage bookings.
+A full-stack property booking web application built with the **MERN stack** (MongoDB, Express.js, React.js, Node.js). Users can browse, book, and manage properties. Hosts can list new properties and manage bookings.
 
 ---
 
 ## 🚀 Features
 
-### ✅ User Features:
-- User signup/login/logout using JWT cookies
+- User authentication (Sign Up, Login, Logout)
 - Browse and view property listings
+- Search properties by location
 - Book properties for selected dates
-- View personal bookings
-
-### 🏘️ Host Features:
-- Become a host
-- Add new properties
-- View bookings for listed properties (optional feature extension)
-
-### 💡 Additional:
+- View your bookings
+- Become a host and add new properties
+- Add and view Wishlist
+- Rate and review properties after your stay
+- View all reviews for a property
 - Responsive UI with Tailwind CSS
 - State management using Redux Toolkit
 - Real-time status update of bookings via cron job
@@ -27,26 +24,10 @@ This is a **Full-Stack Property Booking Web Application** built using the **MERN
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [Redux Toolkit](https://redux-toolkit.js.org/)
-- [React Router](https://reactrouter.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Axios](https://axios-http.com/)
-- [React Toastify](https://fkhadra.github.io/react-toastify/)
-
-### Backend
-- [Node.js](https://nodejs.org/)
-- [Express.js](https://expressjs.com/)
-- [MongoDB + Mongoose](https://mongoosejs.com/)
-- [JWT](https://jwt.io/)
-- [Cloudinary](https://cloudinary.com/) for image upload
-- [Multer](https://github.com/expressjs/multer) for file handling
-- [Node-cron](https://www.npmjs.com/package/node-cron) for automatic booking status updates
+- **Frontend:** React, Vite, Redux Toolkit, React Router, Axios, Tailwind CSS, React Toastify
+- **Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, Cloudinary (image upload), Multer (file handling), Node-cron (auto booking status updates)
 
 ---
-
 
 ## 📁 Project Structure
 
@@ -68,6 +49,34 @@ Property_Booking_App/
 └── README.md               # Main readme (you are here)
 ```
 
+
+
+## 📝 Notes
+
+- All endpoints (except signup/login) require authentication via JWT cookie.
+- To add a property, the user must first become a host.
+- Image uploads for properties are handled via multipart/form-data.
+- Bookings automatically update status via a daily cron job.
+- Ratings can only be submitted for completed bookings.
+- Wishlist and ratings are synced with your account.
+
 ---
 
-### The app will be available at [Live Link](https://property-booking-app-frontend.onrender.com)
+## 🌐 Live Demo
+
+- [Frontend Live](https://property-booking-app-frontend.onrender.com)
+- [Backend Live](https://property-booking-app-backend.onrender.com/api)
+
+---
+
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙏 Acknowledgements
+
+- Inspired by Airbnb and similar property booking platforms.
+- Built with the MERN stack and modern React
