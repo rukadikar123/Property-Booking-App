@@ -89,7 +89,7 @@ function Navbar({ setSearchedProperties }) {
         {/* Logo */}
         <Link
           to="/listing"
-          className="text-3xl font-extrabold text-[#FF385C] hover:text-[#e11d48] transition duration-200  tracking-tight"
+          className="md:text-3xl text-xl font-extrabold text-[#FF385C] hover:text-[#e11d48] transition duration-200  tracking-tight"
         >
           StayFinder
         </Link>
