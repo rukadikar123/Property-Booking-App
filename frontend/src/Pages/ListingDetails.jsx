@@ -4,8 +4,10 @@ import { IoStar } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ReviewsPopup from "../Components/ReviewsPopup";
+import { useSelector } from "react-redux";
 
 function ListingDetails() {
+  const {user}=useSelector(state=>state?.auth)
   const { id } = useParams(); // Get property ID from URL
   const [property, setProperty] = useState(null); // State for property data
   const [reviews,setReviews]=useState(null)
@@ -47,6 +49,10 @@ function ListingDetails() {
   // Handle booking submission
   const handleBooking = async () => {
     try {
+      if(!user){
+        toast.warn("please login first to book stay")
+        return
+      }
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/booking/place-booking`,
         { propertyId: property?._id, checkIn, checkOut },
@@ -72,7 +78,8 @@ function ListingDetails() {
 
   useEffect(() => {
     fetchProperty();
-    fetchReviews()
+      fetchReviews()
+    
   }, [id]);
 
   return (
@@ -113,7 +120,7 @@ function ListingDetails() {
         </div>
 
         {/* Location */}
-        <div className="flex items-center gap-80">
+        <div className="flex items-center md:gap-80 gap-36">
           <div>
             <h2 className="text-xl font-semibold mb-1 text-gray-800">
               Location
@@ -129,7 +136,7 @@ function ListingDetails() {
             </div>
             <div className="w-px h-6 bg-gray-300" />
             <div
-              onClick={() => setIsReviewPopupOpen(true)}
+              onClick={() =>  setIsReviewPopupOpen(true) }
               className="flex flex-col font-bold items-center cursor-pointer"
             >
               <span className="text-sm text-gray-700">

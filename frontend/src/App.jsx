@@ -37,13 +37,15 @@ function App() {
       dispatch(setWishlist(response?.data?.wishlist)); // Update the Redux store with the fetched wishlist data
       // console.log("fetchWishlist",response);
     } catch (error) {
-      console.log("fetch property error", error);
+      // console.log("fetch property error", error);
     }
   };
 
   // Automatically fetch wishlist when the `user` changes (e.g., login/logout)
   useEffect(() => {
-    fetchWishlist();
+    if(user){
+      fetchWishlist()
+    }
   }, [user]);
 
   if (loading) return <div>Loading...</div>; // While fetching user data, show loading
@@ -54,19 +56,10 @@ function App() {
       <Navbar setSearchedProperties={setSearchedProperties} />
       {/* Define routes */}
       <Routes>
-        <Route
-          path="/"
-          element={<Navigate to={user ? "/listing" : "login"} />}
-        />
+        <Route path="/" element={<Navigate to="/listing" />} />
         <Route
           path="/listing"
-          element={
-            user ? (
-              <PropertyCard fetchWishlist={fetchWishlist} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={<PropertyCard fetchWishlist={fetchWishlist} />}
         />
         <Route
           path="/signup"
@@ -78,7 +71,7 @@ function App() {
         />
         <Route
           path="/listing/:id"
-          element={user ? <ListingDetails /> : <Navigate to="/listing" />}
+          element={<ListingDetails />}
         />
         <Route
           path="/my-bookings"
@@ -95,10 +88,11 @@ function App() {
             <SearchedDestinations searchedProperties={searchedProperties} />
           }
         />
-        <Route path="/my-wishlist" element={<WishList />} />
+        <Route path="/my-wishlist" element={user ? <WishList /> : <Navigate to="/listing" />} />   
         <Route />
       </Routes>
-      <ToastContainer />
+      <ToastContainer  
+      autoClose={1500} />
     </>
   );
 }

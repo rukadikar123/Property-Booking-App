@@ -5,9 +5,13 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoStar } from "react-icons/io5";
 import { toast } from "react-toastify";
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
+
 
 function PropertyCard({ fetchWishlist }) {
   const { properties, wishlist } = useSelector((state) => state?.property); // Access properties and wishlist from Redux store
+  const {user}=useSelector(state=>state?.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -15,6 +19,10 @@ function PropertyCard({ fetchWishlist }) {
   const wishlistHandler = async (e, property) => {
     e.stopPropagation();
     try {
+      if(!user){
+        toast.warn("Please log in to add to wishlist")
+        return
+      }
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/wishlist/toggleWishlist`,
         { propertyId: property._id },
@@ -49,7 +57,7 @@ function PropertyCard({ fetchWishlist }) {
   return (
     <>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">Popular Homes</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Popular Homes {">"} </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {properties &&
@@ -96,7 +104,7 @@ function PropertyCard({ fetchWishlist }) {
                     onClick={(e) => wishlistHandler(e, property)}
                     className="absolute top-2 right-2 text-2xl"
                   >
-                    {isWishlisted ? "❤" : "🤍"}
+                    {isWishlisted ? <FaHeart className="text-[#FF385C]"/> : <FaRegHeart/>}
                   </div>
                 </div>
               );

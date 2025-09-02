@@ -32,7 +32,7 @@ function Profile() {
     // Show warning if no image is selected
     if (!backendImage) {
       setLoading(false);
-      return toast.warn("Please select an image");
+      return toast.warn("Please select a new image to update");
     }
 
     // Create form data with the selected image

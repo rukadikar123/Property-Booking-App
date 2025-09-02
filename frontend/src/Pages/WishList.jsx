@@ -11,7 +11,7 @@ function WishList() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {
           // If wishlist is empty, show a message
-          wishlist.length === 0 ? (
+          wishlist?.length === 0 ? (
             <p className="text-center text-xl font-medium text-gray-500">
               You haven’t added any properties to your wishlist yet.{" "}
             </p>
@@ -19,7 +19,7 @@ function WishList() {
             <>
               {/* Wishlist heading */}
               <h1 className="text-3xl font-bold mb-6 text-gray-800">
-                Your Wishlist
+                Your Wishlist {">"}
               </h1>
               {/* Grid layout for wishlist items */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

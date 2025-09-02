@@ -67,6 +67,11 @@ function Navbar({ setSearchedProperties }) {
   // Become a host handler
   const handleHost = async () => {
     try {
+      if(!user){
+         toast.warn("Please login first")
+         navigate("/listing")
+         return;
+      }
       if (user?.isHost) {
         return navigate("/add");
       }
@@ -113,7 +118,7 @@ function Navbar({ setSearchedProperties }) {
         </div>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center space-x-6 font-medium text-md">
+        <nav className="hidden md:flex items-center space-x-6 font-semibold text-md">
           <Link
             to="/listing"
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
@@ -122,6 +127,11 @@ function Navbar({ setSearchedProperties }) {
           </Link>
           <Link
             to="/my-bookings"
+            onClick={()=>{
+              if(!user){
+              toast.error("Please login to view your bookings")
+              }
+            }}
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
           >
             My Bookings
@@ -173,7 +183,7 @@ function Navbar({ setSearchedProperties }) {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden flex flex-col w-full items-start px-6 py-4 bg-white space-y-4 shadow-lg transition-all duration-300">
+        <div className="md:hidden flex flex-col w-full items-start px-6 py-4 font-medium bg-white space-y-4 shadow-lg transition-all duration-300">
           <div className="flex justify-between w-full items-center">
             <Link
               to="/listing"
@@ -193,6 +203,11 @@ function Navbar({ setSearchedProperties }) {
           </div>
           <Link
             to="/my-bookings"
+            onClick={()=>{
+              if(!user){
+              toast.error("Please login to view your bookings")
+              }
+            }}
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
           >
             My Bookings

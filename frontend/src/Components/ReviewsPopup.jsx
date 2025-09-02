@@ -40,8 +40,8 @@ function ReviewsPopup({ onclose, property, reviews }) {
         <div className=" flex items-center space-x-20">
           {/* Average rating with star */}
           <div className="flex items-center gap-1">
-            <h1 className="text-2xl font-semibold">{property?.ratings}</h1>
-            <FaStar />
+            <h1 className="text-2xl font-semibold">{property?.ratings.toFixed(2)}</h1>
+            <FaStar /> 
           </div>
           {/* Total reviews count */}
           <div className="text-2xl font-semibold">
