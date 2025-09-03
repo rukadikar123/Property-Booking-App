@@ -27,10 +27,10 @@ https://property-booking-app-backend.onrender.com/api
 
 | Method | Endpoint             | Description                        | Auth Required |
 |--------|----------------------|------------------------------------|--------------|
-| GET    | `/listing`           | Get all property listings          | Yes          |
+| GET    | `/listing`           | Get all property listings          | No          |
 | POST   | `/listing/add`       | Add a new property (host only)     | Yes          |
-| GET    | `/listing/:id`       | Get property details by ID         | Yes          |
-| GET    | `/listing/search`    | Search properties by query         | Yes          |
+| GET    | `/listing/:id`       | Get property details by ID         | No          |
+| GET    | `/listing/search`    | Search properties by query         | No          |
 
 ---
 
@@ -49,16 +49,16 @@ https://property-booking-app-backend.onrender.com/api
 |--------|-------------------------|------------------------------------------|--------------|
 | GET    | `/rating/isPending`     | Check if user has pending ratings        | Yes          |
 | POST   | `/rating/add`           | Add a rating for a property/booking      | Yes          |
-| GET    | `/rating/reviews/:id`   | Get all reviews for a property           | Yes          |
+| GET    | `/rating/reviews/:id`   | Get all reviews for a property           | No          |
 
 ---
 
 ## Wishlist Endpoints
 
-| Method | Endpoint                | Description                              | Auth Required |
-|--------|-------------------------|------------------------------------------|--------------|
-| POST   | `/wishlist/toggleWishlist` | Add/remove property from wishlist      | Yes          |
-| GET    | `/wishlist/allWishlist` | Get all wishlist items for user          | Yes          |
+| Method | Endpoint                   | Description                           | Auth Required|
+|--------|------------------------- --|---------------------------------------|--------------|
+| POST   | `/wishlist/toggleWishlist` | Add/remove property from wishlist     | Yes          |
+| GET    | `/wishlist/allWishlist`    | Get all wishlist items for user       | Yes          |
 
 ---
 
