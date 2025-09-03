@@ -16,7 +16,7 @@ function useGetCurrentUser() {
           `${import.meta.env.VITE_API_URL}/api/auth/current`,
           { withCredentials: true }
         );
-        // console.log(res);
+        console.log("current user data",res);
         dispatch(setUser(res?.data?.user)); // Set user in Redux store
       } catch (error) {
         // console.log(error);

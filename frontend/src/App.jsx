@@ -45,6 +45,9 @@ function App() {
   useEffect(() => {
     if(user){
       fetchWishlist()
+    }else{
+      dispatch(setWishlist(null));
+
     }
   }, [user]);
 

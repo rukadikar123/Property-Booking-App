@@ -10,9 +10,9 @@ import { upload } from "../Middlewares/multer.js";
 
 const router = Router();
 
-router.get("/", getpropertyList); // Route to get all property listings (requires authentication)
+router.get("/", getpropertyList); // Route to get all property listings 
 router.post("/add", isAuthenticated, upload.array("images", 6), addProperty); // Route to add a new property (requires authentication and image upload)
-router.get("/search",getSearchProperty)   // Route to search for properties based on query parameters (requires authentication)
-router.get("/:id", getProperty); // Route to get details of a specific property by ID (requires authentication)
+router.get("/search",getSearchProperty)   // Route to search for properties based on query parameters 
+router.get("/:id", getProperty); // Route to get details of a specific property by ID 
 
 export default router;
