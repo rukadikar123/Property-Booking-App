@@ -84,7 +84,7 @@ function App() {
           path="/add"
           element={user ? <AddProperty /> : <Navigate to="/listing" />}
         />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={user ? <Profile /> : <Navigate to="/listing" />} />
         <Route
           path="/search"
           element={
