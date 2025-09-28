@@ -4,6 +4,12 @@ A full-stack property booking web application built with the **MERN stack** (Mon
 
 ---
 
+## 🌐 Live Demo
+
+- [Live Link](https://property-booking-app-frontend.onrender.com)
+  Note: This app is hosted on Render (free tier). The backend spins down after inactivity, so the first request may take 10-20 seconds to load.
+---
+
 ## 🚀 Features
 
 - User authentication (Sign Up, Login, Logout)
@@ -62,12 +68,7 @@ Property_Booking_App/
 
 ---
 
-## 🌐 Live Demo
 
-- [Frontend Live](https://property-booking-app-frontend.onrender.com)
-- [Backend Live](https://property-booking-app-backend.onrender.com/api)
-
----
 
 
 ## 📄 License

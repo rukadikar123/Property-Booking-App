@@ -7,7 +7,7 @@ export const isAuthenticated = async (req, res, next) => {
     const token = req?.cookies?.jwt;
     // If token is missing, user is not authenticated
     if (!token) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
         message: "Unauthorized",
       });

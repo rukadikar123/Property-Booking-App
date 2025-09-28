@@ -15,15 +15,15 @@ function Navbar({ setSearchedProperties }) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   // Redirect to /listing if searchTerm is empty when component mounts
   useEffect(() => {
-    if(!searchTerm){
-    navigate("/listing")
-  }
-  }, [])
-  
-// Function to handle the property search logic
+    if (!searchTerm) {
+      navigate("/listing");
+    }
+  }, []);
+
+  // Function to handle the property search logic
   const handleSearch = async () => {
     try {
       // If searchTerm is empty or whitespace, show a warning toast
@@ -31,15 +31,15 @@ function Navbar({ setSearchedProperties }) {
         toast.warn("Please enter a location to search.");
         return;
       }
- // Make a GET request to fetch properties matching the search term
+      // Make a GET request to fetch properties matching the search term
       let response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/listing/search`,
         {
-          params: { query: searchTerm },    // Pass searchTerm as query param
-          withCredentials: true,            // Include cookies/credentials in request
+          params: { query: searchTerm }, // Pass searchTerm as query param
+          withCredentials: true, // Include cookies/credentials in request
         }
       );
-      setSearchedProperties(response?.data?.SearchedDestinations);     // Save the fetched search results into state
+      setSearchedProperties(response?.data?.SearchedDestinations); // Save the fetched search results into state
       // console.log("searched result",response);
       setSearchTerm("");
       navigate("/search");
@@ -67,10 +67,10 @@ function Navbar({ setSearchedProperties }) {
   // Become a host handler
   const handleHost = async () => {
     try {
-      if(!user){
-         toast.warn("Please login first")
-         navigate("/listing")
-         return;
+      if (!user) {
+        toast.warn("Please login first");
+        navigate("/listing");
+        return;
       }
       if (user?.isHost) {
         return navigate("/add");
@@ -127,9 +127,9 @@ function Navbar({ setSearchedProperties }) {
           </Link>
           <Link
             to="/my-bookings"
-            onClick={()=>{
-              if(!user){
-              toast.error("Please login to view your bookings")
+            onClick={() => {
+              if (!user) {
+                toast.error("Please login to view your bookings");
               }
             }}
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
@@ -143,7 +143,10 @@ function Navbar({ setSearchedProperties }) {
             {user?.isHost ? "Add Property" : "Become a Host"}
           </button>
           {user && (
-            <Link to="/my-wishlist" className="text-gray-700 hover:text-[#FF385C] transition duration-200">
+            <Link
+              to="/my-wishlist"
+              className="text-gray-700 hover:text-[#FF385C] transition duration-200"
+            >
               Wishlist
             </Link>
           )}
@@ -203,9 +206,9 @@ function Navbar({ setSearchedProperties }) {
           </div>
           <Link
             to="/my-bookings"
-            onClick={()=>{
-              if(!user){
-              toast.error("Please login to view your bookings")
+            onClick={() => {
+              if (!user) {
+                toast.error("Please login to view your bookings");
               }
             }}
             className="text-gray-700 hover:text-[#FF385C] transition duration-200"
@@ -221,8 +224,11 @@ function Navbar({ setSearchedProperties }) {
           >
             {user?.isHost ? "Add Property" : "Become a Host"}
           </button>
-            {user && (
-            <Link to="/my-wishlist" className="text-gray-700 hover:text-red-500 transition">
+          {user && (
+            <Link
+              to="/my-wishlist"
+              className="text-gray-700 hover:text-red-500 transition"
+            >
               Wishlist
             </Link>
           )}
